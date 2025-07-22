@@ -55,7 +55,7 @@ class AddressPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can show the model.
      */
     public function showOwnAddresses(User $user): bool
     {

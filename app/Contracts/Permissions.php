@@ -16,6 +16,13 @@ abstract class Permissions {
     public const CREATE_ADDRESS = "create address";
     public const UPDATE_ADDRESS = "update address";
     public const DELETE_ADDRESS = "delete address";
+
+    // store permissions
+    public const VIEW_ALL_STORES = "view all stores";
+    public const VIEW_STORE_DETAILS = "view store details";
+    public const CREATE_STORE = "create store";
+    public const UPDATE_STORE = "update store";
+    public const DELETE_STORE = "delete store";
     
 
 
@@ -33,6 +40,12 @@ abstract class Permissions {
             Permissions::CREATE_ADDRESS,
             Permissions::UPDATE_ADDRESS,
             Permissions::DELETE_ADDRESS,
+
+            Permissions::VIEW_ALL_STORES,
+            Permissions::VIEW_STORE_DETAILS,
+            Permissions::CREATE_STORE,
+            Permissions::UPDATE_STORE,
+            Permissions::DELETE_STORE,
         ];
     }
 }

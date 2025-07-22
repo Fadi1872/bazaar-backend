@@ -66,4 +66,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    /**
+     * get the user store
+     */
+    public function store()
+    {
+        return $this->hasOne(Store::class);
+    }
 }

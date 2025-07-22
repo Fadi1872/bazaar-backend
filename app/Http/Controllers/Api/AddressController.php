@@ -11,7 +11,6 @@ use App\Services\AddressService;
 use App\Services\EloquentStorage;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {

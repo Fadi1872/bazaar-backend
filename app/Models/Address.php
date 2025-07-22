@@ -23,4 +23,12 @@ class Address extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * get the associated store
+     */
+    public function store()
+    {
+        return $this->hasOne(Store::class);
+    }
 }
