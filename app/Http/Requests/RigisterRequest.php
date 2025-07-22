@@ -21,12 +21,9 @@ class RigisterRequest extends BaseRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'age' => "required|integer|max:100|min:18",
             "number" => "required|string|regex:/^\\d{10}$/",
-            "gender" => "required|boolean",
             'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|confirmed|min:8|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'password' => 'required|string|min:8|max:255',
             "app_source" => "required|string|in:main,admin"
         ];
     }

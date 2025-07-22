@@ -27,7 +27,7 @@ class AuthService
      * @param UploadedFile $image
      * @return array
      */
-    public function rigister(array $data, UploadedFile $image)
+    public function rigister(array $data, UploadedFile | null $image)
     {
         $appSource = $data['app_source'];
         unset($data['app_source']);

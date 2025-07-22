@@ -16,19 +16,25 @@ class Store extends Model
         'rating'
     ];
 
-    // get the owner of the store
+    /**
+     * get the owner of the store
+     */
     public function owner()
     {
         return $this->belongsTo(User::class);
     }
 
-    // get the category of the store
+    /**
+     * get the category of the store
+     */
     public function category()
     {
         return $this->belongsTo(StoreCategory::class, 'store_category_id');
     }
 
-    // get the address details
+    /**
+     * get the address details
+     */
     public function address()
     {
         return $this->belongsTo(Address::class);
