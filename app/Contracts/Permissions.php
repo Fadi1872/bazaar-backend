@@ -2,8 +2,9 @@
 
 namespace app\Contracts;
 
-abstract class Permissions {
-    //users
+abstract class Permissions
+{
+    // users
     public const VIEW_USERS = "view users";
     public const CREATE_USERS = "create users";
     public const UPDATE_USERS = "update users";
@@ -23,11 +24,35 @@ abstract class Permissions {
     public const CREATE_STORE = "create store";
     public const UPDATE_STORE = "update store";
     public const DELETE_STORE = "delete store";
-    
+    public const COMMENT_ON_STORE = "comment on store";
+    public const VIEW_STORE_COMMENTS = "view store comments";
+
+    // store category permissions
+    public const VIEW_STORE_CATEGORY = "view store category";
+    public const CREATE_STORE_CATEGORY = "create store category";
+    public const DELETE_STORE_CATEGORY = "delete store category";
+
+    // comment permissions
+    public const UPDATE_COMMENT = "update comment";
+    public const DELETE_COMMENT = "delete comment";
+    public const LIKE_COMMENT = "like comment";
+    public const UNLIKE_COMMENT = "unlike comment";
+
+    // product permissions
+    public const VIEW_ALL_PRODUCTS = "view all products";
+    public const VIEW_PRODUCT_DETAILS = "view product details";
+    public const CREATE_PRODUCTS = "create products";
+    public const UPDATE_PRODUCTS = "update products";
+    public const DELETE_PRODUCTS = "delete products";
+    public const COMMENT_ON_PRODUCTS = "comment on products";
+    public const VIEW_PRODUCT_COMMENTS = "view product comments";
 
 
 
-    public static function all() {
+
+
+    public static function all()
+    {
         return [
             Permissions::VIEW_USERS,
             Permissions::CREATE_USERS,
@@ -46,6 +71,25 @@ abstract class Permissions {
             Permissions::CREATE_STORE,
             Permissions::UPDATE_STORE,
             Permissions::DELETE_STORE,
+            Permissions::COMMENT_ON_STORE,
+            Permissions::VIEW_STORE_COMMENTS,
+
+            Permissions::VIEW_STORE_CATEGORY,
+            Permissions::CREATE_STORE_CATEGORY,
+            Permissions::DELETE_STORE_CATEGORY,
+
+            Permissions::UPDATE_COMMENT,
+            Permissions::DELETE_COMMENT,
+            Permissions::LIKE_COMMENT,
+            Permissions::UNLIKE_COMMENT,
+
+            Permissions::VIEW_ALL_PRODUCTS,
+            Permissions::VIEW_PRODUCT_DETAILS,
+            Permissions::CREATE_PRODUCTS,
+            Permissions::UPDATE_PRODUCTS,
+            Permissions::DELETE_PRODUCTS,
+            Permissions::COMMENT_ON_PRODUCTS,
+            Permissions::VIEW_PRODUCT_COMMENTS,
         ];
     }
 }

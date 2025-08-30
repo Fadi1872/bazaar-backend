@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('store_category_id')->constrained('store_categories')->onDelete('cascade');
-            $table->enum('location_type', ['online', 'onsite']);
-            $table->foreignId('address_id')->nullable()->constrained()->onDelete('cascade');
+            $table->decimal('price', 10, 2);
+            $table->decimal('cost', 10, 2);
+            $table->integer('stock_qty');
+            $table->boolean('show_in_store')->default(true);
+            $table->unsignedTinyInteger('rating')->default(0);
             $table->unsignedBigInteger("rating_count")->default(0);
-            $table->tinyInteger('rating')->default(0);
+            $table->foreignId('product_category_id')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('products');
     }
 };

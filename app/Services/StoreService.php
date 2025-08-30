@@ -149,6 +149,9 @@ class StoreService
                 Storage::disk('public')->delete($store->image->path);
                 $store->image()->delete();
             }
+
+            $store->comments()->delete();
+
             $store->delete();
             DB::commit();
         } catch (\Exception $e) {

@@ -23,7 +23,8 @@ class StoreResource extends JsonResource
             "category" => new StoreCategoryResource($this->category),
             "location_type" => $this->location_type,
             "address" => $this->address ? new AddressResource($this->address) : null,
-            "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null
+            "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }

@@ -45,7 +45,7 @@ class AddressController extends Controller
             $address = $this->service->createAndAddToUserAddresses($request->validated());
             return $this->successResponse("address created successfully and attached to you.", new AddressResource($address));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to create the address", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 

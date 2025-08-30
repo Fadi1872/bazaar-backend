@@ -36,17 +36,17 @@ class AuthController extends Controller
     public function register(RigisterRequest $request)
     {
         // try {
-            //get the image ig provided
-            $image = null;
-            if ($request->hasFile('image'))
-                $image = $request->file('image');
+        //get the image ig provided
+        $image = null;
+        if ($request->hasFile('image'))
+            $image = $request->file('image');
 
-            //rigitring the user
-            $data = $this->authService->rigister(
-                collect($request->validated())->except('image')->toArray(),
-                $image
-            );
-            return $this->successResponse("user rigistered successfully!", $data);
+        //rigitring the user
+        $data = $this->authService->rigister(
+            collect($request->validated())->except('image')->toArray(),
+            $image
+        );
+        return $this->successResponse("user rigistered successfully!", $data);
         // } catch (Throwable $e) {
         //     return $this->errorResponse("something went wrong!", 500);
         // }
@@ -102,11 +102,12 @@ class AuthController extends Controller
      * @param UpdateUserRequest $user, User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateUserRequest $request) {
-        try{
+    public function update(UpdateUserRequest $request)
+    {
+        try {
             $this->authService->update(Auth::user(), $request->validated());
-            return $this->successResponse("user profile details updated successfully!", new UserResource(Auth::user()->load('image')));
-        } catch(AuthorizationException $e) {
+            return $this->successResponse("user profile details updated successfully!", (new UserResource(Auth::user()->load('image')))->toArray($request));
+        } catch (AuthorizationException $e) {
             return $this->errorResponse("something went wrong", 500);
         }
     }

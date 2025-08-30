@@ -24,7 +24,7 @@ class UpdateAddressRequest extends BaseRequest
     {
         return [
             "city"      => "required|string|max:100",
-            "street"    => "required|string|max:255",
+            "phone_number" => "required|string|regex:/^\\d{10}$/",
             "latitude"  => "nullable|numeric|between:-90,90",
             "longitude" => "nullable|numeric|between:-180,180",
             "label"     => "required|string|max:255"

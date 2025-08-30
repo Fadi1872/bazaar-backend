@@ -4,44 +4,38 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Store extends Model
+class Product extends Model
 {
     protected $fillable = [
+        'user_id',
         'name',
         'description',
-        'user_id',
-        'store_category_id',
-        'location_type',
-        'address_id',
+        'product_category_id',
+        'price',
+        'cost',
+        'stock_qty',
+        'show_in_store',
         'rating'
     ];
 
     /**
-     * get the owner of the store
+     * return the user that created this product
      */
-    public function owner()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * get the category of the store
+     * return the category of the product
      */
     public function category()
     {
-        return $this->belongsTo(StoreCategory::class, 'store_category_id');
+        return $this->belongsTo(ProductCategory::class, "product_category_id");
     }
 
     /**
-     * get the address details
-     */
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
-
-    /**
-     * get the store image
+     * return the prodect image
      */
     public function image()
     {
@@ -57,18 +51,26 @@ class Store extends Model
     }
 
     /**
-     * get the store products
+     * Get the store that owns this product (through the user).
      */
-    public function products()
+    public function store()
     {
-        return $this->hasManyThrough(
-            Product::class,
+        return $this->hasOneThrough(
+            Store::class,
             User::class,
             'id',
             'user_id',
             'user_id',
             'id'
-        )->where('show_in_store', true)
+        );
+    }
+
+    /**
+     * Scope a query to only include available products.
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('show_in_store', true)
             ->where('stock_qty', '>', 0);
     }
 }

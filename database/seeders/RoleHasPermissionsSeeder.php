@@ -16,25 +16,60 @@ class RoleHasPermissionsSeeder extends Seeder
     public function run(): void
     {
         $rolesWithPermissions = [
-            Roles::ADMIN => [
-                Permissions::VIEW_USERS,
-                Permissions::CREATE_USERS,
-                Permissions::UPDATE_USERS,
-                Permissions::DELETE_USERS,
-                Permissions::ASSIGN_ROLES,
-
-                Permissions::VIEW_ALL_ADDRESSES,
-                Permissions::CREATE_ADDRESS,
-                Permissions::UPDATE_ADDRESS,
-                Permissions::DELETE_ADDRESS,
-            ],
+            Roles::ADMIN => Permissions::all(),
             Roles::INSPECTOR => [
                 Permissions::VIEW_OWN_ADDRESSES,
                 Permissions::CREATE_ADDRESS,
                 Permissions::UPDATE_ADDRESS,
-                Permissions::DELETE_ADDRESS
+                Permissions::DELETE_ADDRESS,
+
+                Permissions::VIEW_ALL_STORES,
+                Permissions::VIEW_STORE_DETAILS,
+                Permissions::COMMENT_ON_STORE,
+                Permissions::VIEW_STORE_COMMENTS,
+
+                Permissions::UPDATE_COMMENT,
+                Permissions::DELETE_COMMENT,
+                Permissions::LIKE_COMMENT,
+                Permissions::UNLIKE_COMMENT,
+
+                Permissions::VIEW_STORE_CATEGORY,
+
+                Permissions::VIEW_ALL_PRODUCTS,
+                Permissions::VIEW_PRODUCT_DETAILS,
+                Permissions::COMMENT_ON_PRODUCTS,
+                Permissions::VIEW_PRODUCT_COMMENTS,
             ],
-            Roles::SELLER => []
+            Roles::SELLER => [
+                Permissions::VIEW_OWN_ADDRESSES,
+                Permissions::CREATE_ADDRESS,
+                Permissions::UPDATE_ADDRESS,
+                Permissions::DELETE_ADDRESS,
+
+                Permissions::VIEW_ALL_STORES,
+                Permissions::VIEW_STORE_DETAILS,
+                Permissions::CREATE_STORE,
+                Permissions::UPDATE_STORE,
+                Permissions::DELETE_STORE,
+                Permissions::COMMENT_ON_STORE,
+                Permissions::VIEW_STORE_COMMENTS,
+
+                Permissions::UPDATE_COMMENT,
+                Permissions::DELETE_COMMENT,
+                Permissions::LIKE_COMMENT,
+                Permissions::UNLIKE_COMMENT,
+
+                Permissions::VIEW_STORE_CATEGORY,
+                Permissions::CREATE_STORE_CATEGORY,
+
+                Permissions::VIEW_ALL_PRODUCTS,
+                Permissions::VIEW_PRODUCT_DETAILS,
+                Permissions::CREATE_PRODUCTS,
+                Permissions::UPDATE_PRODUCTS,
+                Permissions::DELETE_PRODUCTS,
+                Permissions::COMMENT_ON_PRODUCTS,
+                Permissions::VIEW_PRODUCT_COMMENTS,
+            ]
         ];
 
         foreach ($rolesWithPermissions as $roleName => $permissions) {

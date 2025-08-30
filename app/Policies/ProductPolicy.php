@@ -4,10 +4,10 @@ namespace App\Policies;
 
 use app\Contracts\Permissions;
 use app\Contracts\Roles;
-use App\Models\Store;
+use App\Models\Product;
 use App\Models\User;
 
-class StorePolicy
+class ProductPolicy
 {
     public function before(User $user)
     {
@@ -20,7 +20,7 @@ class StorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Roles::INSPECTOR);
+        return $user->hasPermissionTo(Permissions::VIEW_ALL_PRODUCTS);
     }
 
     /**
@@ -28,7 +28,7 @@ class StorePolicy
      */
     public function view(User $user): bool
     {
-        return $user->can(Permissions::VIEW_STORE_DETAILS);
+        return $user->hasPermissionTo(Permissions::VIEW_PRODUCT_DETAILS);
     }
 
     /**
@@ -36,23 +36,23 @@ class StorePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(Roles::SELLER) && !$user->store()->exists();
+        return $user->hasPermissionTo(Permissions::CREATE_PRODUCTS);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Store $store): bool
+    public function update(User $user, Product $product): bool
     {
-        return $user->hasRole(Roles::SELLER) && $store->user_id == $user->id;
+        return $user->hasPermissionTo(Permissions::UPDATE_PRODUCTS) && $user->id == $product->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Store $store): bool
+    public function delete(User $user, Product $product): bool
     {
-        return $user->hasRole(Roles::SELLER) && $store->user_id == $user->id;
+        return $user->hasPermissionTo(Permissions::DELETE_PRODUCTS) && $user->id == $product->user_id;
     }
 
     /**
@@ -69,5 +69,5 @@ class StorePolicy
     public function viewComments(User $user): bool
     {
         return $user->can(Permissions::VIEW_STORE_COMMENTS);
-    }
+    } 
 }

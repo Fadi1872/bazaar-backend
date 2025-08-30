@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class ImageStorage
 {
     public const PROFILE_IMAGE = 'uploads/profile_images';
+    public const PRODUCT_IMAGE = 'uploads/product_images';
     public const STORE_IMAGE = 'uploads/store_images';
     public const BAZAAR_IMAGE = 'uploads/bazaar_images';
     /**

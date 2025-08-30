@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\StoreFilterRequest;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\ProductCardResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\StoreResource;
+use App\Models\Product;
 use App\Models\Store;
+use App\Services\CommentService;
 use App\Services\StoreService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -16,10 +22,14 @@ class StoreController extends Controller
 {
     use AuthorizesRequests;
     protected StoreService $service;
-    public function __construct(StoreService $service)
+    protected CommentService $commentService;
+
+    public function __construct(StoreService $service, CommentService $commentService)
     {
         $this->service = $service;
+        $this->commentService = $commentService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +64,43 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        //! this should be added after the products table is added
+        $this->authorize('view', Store::class);
+
+        try {
+            $store->load([
+                'address',
+                'image',
+                'category',
+                'comments' => function ($query) {
+                    $query->with('user')
+                        ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
+                        ->take(2);
+                }
+            ]);
+
+            $products = Product::with(['image', 'store'])
+                ->whereHas('user', fn($q) => $q->where('user_id', $store->id))
+                ->get();
+
+
+            $categories = $products
+                ->groupBy('product_category_id')
+                ->map(function ($products) {
+                    $category = $products->first()->category;
+                    return [
+                        'id'       => $category->id,
+                        'name'     => $category->name,
+                        'products' => ProductCardResource::collection($products->take(2)),
+                    ];
+                });
+
+            return $this->successResponse("store detailes", [
+                "store" => new StoreResource($store),
+                "categories" => $categories
+            ]);
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to show store", 500);
+        }
     }
 
     /**
@@ -80,10 +126,38 @@ class StoreController extends Controller
     {
         $this->authorize('delete', $store);
         try {
-            $store = $this->service->deleteStore($store);
-            return $this->successResponse("store deleted", $store);
+            $this->service->deleteStore($store);
+            return $this->successResponse("store deleted");
         } catch (Exception $e) {
             return $this->errorResponse("failed to delete store", 500);
+        }
+    }
+
+    /**
+     * add a comment to the store
+     */
+    public function addComment(StoreCommentRequest $request, Store $store)
+    {
+        try {
+            $comment = $this->commentService->create($store, $request->validated());
+            return $this->successResponse("comment added", new CommentResource($comment->load('user')));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to add comment", 500);
+        }
+    }
+
+    /**
+     * return all store comments
+     */
+    public function comments(Store $store)
+    {
+        $this->authorize('viewComments', Store::class);
+
+        try {
+            $comments = $this->commentService->all($store);
+            return $this->successResponse("comments listed", CommentResource::collection($comments));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to list comments", 500);
         }
     }
 }
