@@ -52,6 +52,6 @@ class ImageStorage
      */
     public static function getUrl(string $path): string
     {
-        return asset("storage/" . $path);
+        return Storage::disk('public')->url($path);
     }
 }
