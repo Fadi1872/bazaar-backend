@@ -15,6 +15,7 @@ use App\Services\ProductService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -64,16 +65,25 @@ class ProductController extends Controller
     {
         $this->authorize('view', $product);
         try {
+            $userId = Auth::id();
             $product = $product->load([
                 'image',
                 'category',
-                'comments' => function ($query) {
-                    $query->with('user')
+                'comments' => function ($query) use ($userId) {
+                    $query->with('user', 'user.image')
+                        ->withCount('likes')
+                        ->when($userId, function ($q) use ($userId) {
+                            $q->withExists([
+                                'likes as is_liked' => function ($sub) use ($userId) {
+                                    $sub->where('user_id', $userId);
+                                }
+                            ]);
+                        })
                         ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
                         ->take(2);
                 }
             ]);
-            return $this->successResponse("product detailes", $product);
+            return $this->successResponse("product detailes", new ProductCardResource($product));
         } catch (Exception $e) {
             return $this->errorResponse("failed to show product", 500);
         }

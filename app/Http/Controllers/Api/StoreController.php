@@ -17,6 +17,7 @@ use App\Services\CommentService;
 use App\Services\StoreService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
@@ -67,12 +68,22 @@ class StoreController extends Controller
         $this->authorize('view', Store::class);
 
         try {
+            $userId = Auth::id();
+
             $store->load([
                 'address',
                 'image',
                 'category',
-                'comments' => function ($query) {
-                    $query->with('user')
+                'comments' =>  function ($query) use ($userId) {
+                    $query->with('user', 'user.image')
+                        ->withCount('likes')
+                        ->when($userId, function ($q) use ($userId) {
+                            $q->withExists([
+                                'likes as is_liked' => function ($sub) use ($userId) {
+                                    $sub->where('user_id', $userId);
+                                }
+                            ]);
+                        })
                         ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
                         ->take(2);
                 }

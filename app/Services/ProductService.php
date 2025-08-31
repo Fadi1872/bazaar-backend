@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ProductCardResource;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\UploadedFile;
@@ -141,7 +142,11 @@ class ProductService
             }
 
             DB::commit();
-            return $product;
+            return new ProductCardResource($product->load(['image', 'store', 'comments' => function ($query) {
+                $query->with('user')
+                    ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
+                    ->take(2);
+            }]));
         } catch (Exception $e) {
             DB::rollBack();
             if ($storedImagePath && Storage::disk('public')->exists($storedImagePath))
