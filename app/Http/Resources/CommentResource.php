@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ImageStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,16 +17,17 @@ class CommentResource extends JsonResource
     {
         $data = [
             "id" => $this->id,
-            "body" => $this->body,
+            "comment" => $this->body,
             "rating" => $this->rating
         ];
 
         if ($this->resource->offsetExists('is_liked'))
-            $data["is_liked"] = $this->is_liked;
+            $data["isLiked"] = $this->is_liked;
         if ($this->resource->offsetExists('likes_count'))
-            $data["likes_count"] = $this->likes_count;
+            $data["likes"] = intval($this->likes_count);
 
-        $data["user"] = new UserResource($this->user);
+        $data["profilePhoto"] = ImageStorage::getUrl($this->user->image->path);
+        $data["name"] = $this->user->name;
 
         return $data;
     }

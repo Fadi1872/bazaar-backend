@@ -17,12 +17,15 @@ class ProductCardResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this->name,
+            "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
+            "status" => $this->created_at->lt(now()->subWeek()) ? null: "new",
             "price" => $this->price,
-            "created_at" => $this->created_at,
-            "image_url" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
+            "name" => $this->name,
             "store_id" => $this->store->id,
-            "store_name" => $this->store->name
+            "markerName" => $this->store->name,
+            "category" => $this->category->name,
+            "rating" => $this->rating,
+            "comments" => CommentResource::collection($this->comments)
         ];
     }
 }

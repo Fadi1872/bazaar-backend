@@ -18,11 +18,12 @@ class StoreResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "description" => $this->description,
             "rating" => $this->rating,
-            "category" => new StoreCategoryResource($this->category),
-            "location_type" => $this->location_type,
-            "address" => $this->address ? new AddressResource($this->address) : null,
+            "sort" => $this->category->name,
+            "address" => $this->address->city,
+            "latitude" => $this->address->latitude,
+            "longitude" => $this->address->longitude,
+            "storeNumber" => $this->address->phone_number,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
         ];

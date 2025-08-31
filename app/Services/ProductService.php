@@ -66,7 +66,11 @@ class ProductService
         $products = $products->paginate($perPage);
 
         $productIds = collect($products->items())->pluck('id');
-        $productModels = Product::with(['image', 'category', 'user'])
+        $productModels = Product::with(['image', 'category', 'user', 'comments' => function ($query) {
+            $query->with('user')
+                ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
+                ->take(2);
+        }])
             ->whereIn('id', $productIds)
             ->get()
             ->keyBy('id');

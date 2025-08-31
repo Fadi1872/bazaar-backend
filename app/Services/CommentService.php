@@ -46,7 +46,7 @@ class CommentService
         $userId = Auth::id();
 
         $comments = $model->comments()
-            ->with('user')
+            ->with(['user', "user.image"])
             ->withCount('likes')
             ->when($userId, function ($query) use ($userId) {
                 $query->withExists([
