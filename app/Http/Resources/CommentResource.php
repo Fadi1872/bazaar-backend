@@ -26,7 +26,7 @@ class CommentResource extends JsonResource
         if ($this->resource->offsetExists('likes_count'))
             $data["likes"] = intval($this->likes_count);
 
-        $data["profilePhoto"] = ImageStorage::getUrl($this->user->image->path);
+        $data["profilePhoto"] = $this->user->image ? ImageStorage::getUrl($this->user->image->path) : null;
         $data["name"] = $this->user->name;
 
         return $data;

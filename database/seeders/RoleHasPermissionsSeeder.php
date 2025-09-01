@@ -39,6 +39,11 @@ class RoleHasPermissionsSeeder extends Seeder
                 Permissions::VIEW_PRODUCT_DETAILS,
                 Permissions::COMMENT_ON_PRODUCTS,
                 Permissions::VIEW_PRODUCT_COMMENTS,
+
+                Permissions::VIEW_ALL_BAZAARS,
+                Permissions::VIEW_BAZAAR_DETAILS,
+                Permissions::COMMENT_ON_BAZAAR,
+                Permissions::VIEW_BAZAAR_COMMENTS,
             ],
             Roles::SELLER => [
                 Permissions::VIEW_OWN_ADDRESSES,

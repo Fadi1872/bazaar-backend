@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetCategoryIdRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\StoreFilterRequest;
 use App\Http\Requests\StoreStoreRequest;
@@ -90,7 +91,7 @@ class StoreController extends Controller
             ]);
 
             $products = Product::with(['image', 'store'])
-                ->whereHas('user', fn($q) => $q->where('user_id', $store->id))
+                ->whereHas('user', fn($q) => $q->where('user_id', $store->user_id))
                 ->get();
 
 
@@ -110,8 +111,16 @@ class StoreController extends Controller
                 "categories" => $categories
             ]);
         } catch (Exception $e) {
-            return $this->errorResponse("failed to show store", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
+    }
+
+    /**
+     * get the product of category
+     */
+    public function getCategoryProducts(GetCategoryIdRequest $request, Store $store)
+    {
+        return $this->successResponse("products listed", $this->service->getCategoryProducts($store, $request->validated()['category_id']));
     }
 
     /**

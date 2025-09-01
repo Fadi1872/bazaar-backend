@@ -47,7 +47,19 @@ abstract class Permissions
     public const COMMENT_ON_PRODUCTS = "comment on products";
     public const VIEW_PRODUCT_COMMENTS = "view product comments";
 
+    // bazaar category permissions
+    public const VIEW_BAZAAR_CATEGORY = "view bazaar category";
+    public const CREATE_BAZAAR_CATEGORY = "create bazaar category";
+    public const DELETE_BAZAAR_CATEGORY = "delete bazaar category";
 
+    // bazaar permissions
+    public const VIEW_ALL_BAZAARS = "view all bazaars";
+    public const VIEW_BAZAAR_DETAILS = "view bazaar details";
+    public const CREATE_BAZAAR = "create bazaar";
+    public const UPDATE_BAZAAR = "update bazaar";
+    public const DELETE_BAZAAR = "delete bazaar";
+    public const COMMENT_ON_BAZAAR = "comment on bazaar";
+    public const VIEW_BAZAAR_COMMENTS = "view bazaar comments";
 
 
 
@@ -90,6 +102,18 @@ abstract class Permissions
             Permissions::DELETE_PRODUCTS,
             Permissions::COMMENT_ON_PRODUCTS,
             Permissions::VIEW_PRODUCT_COMMENTS,
+
+            Permissions::VIEW_BAZAAR_CATEGORY,
+            Permissions::CREATE_BAZAAR_CATEGORY,
+            Permissions::DELETE_BAZAAR_CATEGORY,
+
+            Permissions::VIEW_ALL_BAZAARS,
+            Permissions::VIEW_BAZAAR_DETAILS,
+            Permissions::CREATE_BAZAAR,
+            Permissions::UPDATE_BAZAAR,
+            Permissions::DELETE_BAZAAR,
+            Permissions::COMMENT_ON_BAZAAR,
+            Permissions::VIEW_BAZAAR_COMMENTS,
         ];
     }
 }

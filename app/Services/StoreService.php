@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ProductCardResource;
+use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -158,5 +160,18 @@ class StoreService
             DB::rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * get the products of specific category
+     */
+    public function getCategoryProducts(Store $store, int $categoryId, $perPage = 16)
+    {
+        $products = Product::with(['image', 'store'])
+            ->where('user_id', $store->user_id)
+            ->where('product_category_id', $categoryId)
+            ->paginate($perPage);
+
+        return ProductCardResource::collection($products);
     }
 }

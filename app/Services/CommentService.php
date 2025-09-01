@@ -22,8 +22,8 @@ class CommentService
         $comment = $model->comments()->create($data);
 
         if (isset($model->rating)) {
-            $newCount = $model->ratings_count + 1;
-            $newRating = (($model->rating * $model->ratings_count) + $comment->rating) / $newCount;
+            $newCount = $model->rating_count + 1;
+            $newRating = (($model->rating * $model->rating_count) + $comment->rating) / $newCount;
 
             $model->update([
                 'rating_count' => $newCount,

@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/stores', StoreController::class);
     Route::post('/stores/{store}/comment', [StoreController::class, 'addComment']);
     Route::get('/stores/{store}/comments', [StoreController::class, 'comments']);
+    Route::get('/stores/{store}/products', [StoreController::class, 'getCategoryProducts']);
 
     // Comment Routes
     Route::apiResource('/comments', CommentController::class)->except(['index', 'store', 'show']);

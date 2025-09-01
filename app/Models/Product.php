@@ -15,7 +15,8 @@ class Product extends Model
         'cost',
         'stock_qty',
         'show_in_store',
-        'rating'
+        'rating',
+        'rating_count'
     ];
 
     /**
