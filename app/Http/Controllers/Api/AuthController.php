@@ -110,4 +110,18 @@ class AuthController extends Controller
             return $this->errorResponse("something went wrong", 500);
         }
     }
+
+    /**
+     * delete profile image
+     */
+    public function deleteProfileImage()
+    {
+        $this->authorize('update', Auth::user());
+        try {
+            $this->authService->deleteProfileImage(Auth::user());
+            return $this->successResponse("profile image deleted");
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to delete profile image", 500);
+        }
+    }
 }

@@ -113,4 +113,23 @@ class AuthService
         }
         return $updated;
     }
+
+    /**
+     * delete the user's profile image
+     * 
+     * @param User $user
+     * @return bool
+     */
+    public function deleteProfileImage(User $user): bool
+    {
+        if ($user->image && $user->image->path) {
+            $this->imageStorage->deleteImage($user->image->path);
+
+            $user->image()->delete();
+
+            return true;
+        }
+
+        return false;
+    }
 }

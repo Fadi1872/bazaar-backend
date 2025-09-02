@@ -16,7 +16,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     //? Auth Routes
     Route::post('/logout', [AuthController::class, 'logout']);
-
+    Route::delete('/profileImage', [AuthController::class, 'deleteProfileImage']);
+    
     // Profile Routes
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/me', [AuthController::class, 'update']);
