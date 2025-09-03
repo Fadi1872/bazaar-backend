@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Address;
-use Illuminate\Support\Facades\Auth;
 
 class StoreAddressRequest extends BaseRequest
 {
@@ -24,7 +23,7 @@ class StoreAddressRequest extends BaseRequest
     {
         return [
             "city"      => "required|string|max:100",
-            "phone_number" =>"required|string|regex:/^\\d{10}$/",
+            "phone_number" => "required|string|regex:/^\\d{10}$/",
             "latitude"  => "required|numeric|between:-90,90",
             "longitude" => "required|numeric|between:-180,180",
             "label"     => "required|string|max:255"
