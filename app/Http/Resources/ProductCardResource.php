@@ -25,7 +25,9 @@ class ProductCardResource extends JsonResource
             "markerName" => $this->store->name,
             "category" => $this->category->name,
             "rating" => $this->rating,
-            "comments" => $this->comments ? CommentResource::collection($this->comments) : null
+            "comments" => $this->comments ? CommentResource::collection($this->comments) : null,
+            "oldPrice" => null,
+            "size" => null
         ];
     }
 }

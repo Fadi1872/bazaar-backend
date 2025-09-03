@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('bazaars', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
+            $table->timestamp('start_requesting_date');
+            $table->timestamp('end_requesting_date');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('address_id')->constrained()->onDelete('restricted');
             $table->foreignId("category_id")->constrained("bazaar_categories")->onDelete('restrict');
+            $table->unsignedTinyInteger('positiveness')->default(0);
             $table->timestamps();
         });
     }

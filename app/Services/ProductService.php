@@ -68,7 +68,16 @@ class ProductService
 
         $productIds = collect($products->items())->pluck('id');
         $productModels = Product::with(['image', 'category', 'user', 'comments' => function ($query) {
-            $query->with('user')
+            $userId = Auth::id();
+            $query->with(['user', "user.image"])
+                ->withCount('likes')
+                ->when($userId, function ($query) use ($userId) {
+                    $query->withExists([
+                        'likes as is_liked' => function ($q) use ($userId) {
+                            $q->where('user_id', $userId);
+                        }
+                    ]);
+                })
                 ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
                 ->take(2);
         }])
