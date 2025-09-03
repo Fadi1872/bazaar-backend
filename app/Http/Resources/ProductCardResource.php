@@ -18,6 +18,7 @@ class ProductCardResource extends JsonResource
         return [
             "id" => $this->id,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
+            "details" => $this->description,
             "status" => $this->created_at->lt(now()->subWeek()) ? null: "new",
             "price" => $this->price,
             "name" => $this->name,

@@ -21,6 +21,10 @@ class ProductService
             ->join('stores', 'products.user_id', '=', 'stores.user_id')
             ->leftJoin('addresses', 'stores.address_id', '=', 'addresses.id');
 
+        if (isset($criteria['name'])) {
+            $productsQuery->where('products.name', 'like', "%" . $criteria['name'] . "%");
+        }
+
         if (!empty($criteria['min_rating'])) {
             $productsQuery->where('products.rating', '>=', $criteria['min_rating']);
         }
@@ -111,7 +115,7 @@ class ProductService
 
         if ($page == 1) {
             $cacheKey = 'products_filter:' . Auth::id() . ':' . md5(json_encode($criteria)) . ':page:1';
-            Cache::forget($cacheKey);
+
             return Cache::remember($cacheKey, now()->addMinutes(10), function () use (
                 $criteria,
                 $perPage,

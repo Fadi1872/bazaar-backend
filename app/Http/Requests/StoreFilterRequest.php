@@ -22,6 +22,7 @@ class StoreFilterRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'name'           => ['nullable', 'max:255'],
             'rating'         => ['nullable', 'numeric', 'min:0', 'max:5'],
             'category_ids'   => ['nullable', 'array'],
             'category_ids.*' => ['integer', 'exists:store_categories,id'],

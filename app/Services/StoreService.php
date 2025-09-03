@@ -33,7 +33,7 @@ class StoreService
             ->select('stores.*');
 
         if (isset($criteria['name'])) {
-            $query->where('stores.name', 'like', "%" . $criteria['rating'] . "%");
+            $query->where('stores.name', 'like', "%" . $criteria['name'] . "%");
         }
 
         if (isset($criteria['rating'])) {
