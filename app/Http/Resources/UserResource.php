@@ -18,9 +18,9 @@ class UserResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "age" => $this->age ? intval($this->age) : null,
+            "age" => $this->age != null ? intval($this->age) : null,
             "phone_number" => $this->number,
-            "gender" => $this->gender ? intval($this->gender) : null,
+            "gender" => $this->gender != null ? intval($this->gender) : null,
             "email" => $this->email,
             "profile_image" => $this->image ? ImageStorage::getUrl($this->image->path) : null
         ];

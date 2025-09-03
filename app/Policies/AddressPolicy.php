@@ -43,7 +43,7 @@ class AddressPolicy
      */
     public function update(User $user, Address $address): bool
     {
-        return $user->hasRole([Roles::INSPECTOR, Roles::SELLER]) && $user->id == $address;
+        return $user->hasRole([Roles::INSPECTOR, Roles::SELLER]) && $user->id == $address->user_id;
     }
 
     /**

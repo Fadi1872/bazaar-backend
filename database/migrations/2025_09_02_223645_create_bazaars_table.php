@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bazaars', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("category_id")->constrained("bazaar_categories")->onDelete('restrict');
             $table->timestamps();
         });
     }

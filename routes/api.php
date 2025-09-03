@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BazaarCategoryController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProductCategoryController;
 use App\Http\Controllers\Api\ProductController;
@@ -47,4 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/products', ProductController::class);
     Route::post('/products/{product}/comment', [ProductController::class, 'addComment']);
     Route::get('/products/{product}/comments', [ProductController::class, 'comments']);
+
+    // Bazaar Category Routes
+    Route::apiResource('/bazaar-categories', BazaarCategoryController::class)->except(['show', 'update']);
 });
