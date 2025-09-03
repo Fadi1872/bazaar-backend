@@ -54,7 +54,7 @@ class CommentService
                         $q->where('user_id', $userId);
                     }
                 ]);
-            })
+            }) 
             ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
             ->paginate(15);
 

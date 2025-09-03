@@ -42,4 +42,20 @@ class Bazaar extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    /**
+     * get the comments
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * get the address details
+     */
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
 }
