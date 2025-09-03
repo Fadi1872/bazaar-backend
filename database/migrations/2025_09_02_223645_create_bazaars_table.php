@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->timestamp('start_requesting_date');
-            $table->timestamp('end_requesting_date');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->timestamp('start_requesting_date')->nullable();
+            $table->timestamp('end_requesting_date')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('address_id')->constrained()->onDelete('restricted');
+            $table->foreignId('address_id')->constrained()->onDelete('restrict');
             $table->foreignId("category_id")->constrained("bazaar_categories")->onDelete('restrict');
             $table->unsignedTinyInteger('positiveness')->default(0);
             $table->timestamps();

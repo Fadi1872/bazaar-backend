@@ -148,7 +148,7 @@ class DemoDataSeeder extends Seeder
         Storage::disk('public')->put($targetPath, file_get_contents($sourcePath));
 
         Image::create([
-            'path' => "storage/{$targetPath}",
+            'path' => $targetPath,
             'imageable_id' => $model->id,
             'imageable_type' => get_class($model),
         ]);
