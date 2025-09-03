@@ -111,7 +111,7 @@ class ProductService
 
         if ($page == 1) {
             $cacheKey = 'products_filter:' . Auth::id() . ':' . md5(json_encode($criteria)) . ':page:1';
-
+            Cache::forget($cacheKey);
             return Cache::remember($cacheKey, now()->addMinutes(10), function () use (
                 $criteria,
                 $perPage,

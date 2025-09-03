@@ -32,6 +32,10 @@ class StoreService
             ->leftJoin('addresses', 'stores.address_id', '=', 'addresses.id')
             ->select('stores.*');
 
+        if (isset($criteria['name'])) {
+            $query->where('stores.name', 'like', "%" . $criteria['rating'] . "%");
+        }
+
         if (isset($criteria['rating'])) {
             $query->where('stores.rating', '>=', $criteria['rating']);
         }
