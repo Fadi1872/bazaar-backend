@@ -95,7 +95,7 @@ class StoreController extends Controller
                 ->get();
 
 
-            $categories = $products
+            $categoriesGrouped  = $products
                 ->groupBy('product_category_id')
                 ->map(function ($products) {
                     $category = $products->first()->category;
@@ -106,10 +106,16 @@ class StoreController extends Controller
                     ];
                 });
 
-            return $this->successResponse("store detailes", [
-                "store" => new StoreResource($store),
-                "categories" => $categories
-            ]);
+            $categories = $categoriesGrouped->map(fn($c) => [
+                'id'   => $c['id'],
+                'name' => $c['name'],
+            ])->values();
+
+            $productsList = $categoriesGrouped
+                ->flatMap(fn($c) => $c['products']->toArray(request()))
+                ->values();
+
+            return $this->successResponse("store detailes", new StoreResource($store, $categories, $productsList));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }

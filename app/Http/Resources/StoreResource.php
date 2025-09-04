@@ -8,6 +8,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class StoreResource extends JsonResource
 {
+    protected $categories;
+    protected $products;
+
+    public function __construct($resource, $categories = null, $products = null)
+    {
+        parent::__construct($resource);
+        $this->categories = $categories;
+        $this->products = $products;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -26,6 +35,8 @@ class StoreResource extends JsonResource
             "storeNumber" => $this->address->phone_number,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
             'reviews' => CommentResource::collection($this->comments ?? collect()),
+            'categories' => $this->categories ? $this->categories : [],
+            'products' => $this->products ? $this->products : []
         ];
     }
 }

@@ -19,14 +19,16 @@ class ProductCardResource extends JsonResource
             "id" => $this->id,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
             "details" => $this->description,
-            "status" => $this->created_at->lt(now()->subWeek()) ? null: "new",
+            "status" => $this->created_at->lt(now()->subWeek()) ? null : "new",
             "price" => $this->price,
             "name" => $this->name,
             "store_id" => $this->store->id,
             "markerName" => $this->store->name,
             "category" => $this->category->name,
             "rating" => $this->rating,
-            "comments" => $this->comments ? CommentResource::collection($this->comments) : null,
+            "comments" => $this->relationLoaded('comments')
+                ? CommentResource::collection($this->comments)
+                : null,
             "oldPrice" => 0,
             "size" => ""
         ];
