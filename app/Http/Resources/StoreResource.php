@@ -25,7 +25,7 @@ class StoreResource extends JsonResource
             "longitude" => $this->address->longitude,
             "storeNumber" => $this->address->phone_number,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
-            'comments' => CommentResource::collection($this->whenLoaded('comments')),
+            'reviews' => CommentResource::collection($this->comments ?? collect()),
         ];
     }
 }

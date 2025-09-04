@@ -18,17 +18,12 @@ class CommentResource extends JsonResource
         $data = [
             "id" => $this->id,
             "comment" => $this->body,
-            "rating" => $this->rating
+            "rating" => intval($this->rating),
+            "isLiked" => $this->resource->offsetExists('is_liked') ? $this->is_liked : false,
+            "likes" => $this->resource->offsetExists('likes_count') ? $this->likes_count : 0,
+            "profilePhoto" => $this->user->image ? ImageStorage::getUrl($this->user->image->path) : null,
+            "name" => $this->user->name,
         ];
-
-        if ($this->resource->offsetExists('is_liked'))
-            $data["isLiked"] = $this->is_liked;
-        if ($this->resource->offsetExists('likes_count'))
-            $data["likes"] = intval($this->likes_count);
-
-        $data["profilePhoto"] = $this->user->image ? ImageStorage::getUrl($this->user->image->path) : null;
-        $data["name"] = $this->user->name;
-
         return $data;
     }
 }
