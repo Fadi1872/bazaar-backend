@@ -11,7 +11,8 @@ class UpdateCommentRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', Comment::class);
+        $commentId = $this->route('comment');
+        return $this->user()->can('update', $commentId);
     }
 
     /**
