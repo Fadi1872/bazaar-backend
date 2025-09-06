@@ -23,6 +23,7 @@ class CommentResource extends JsonResource
             "likes" => $this->resource->offsetExists('likes_count') ? $this->likes_count : 0,
             "profilePhoto" => $this->user->image ? ImageStorage::getUrl($this->user->image->path) : null,
             "name" => $this->user->name,
+            "userId" => $this->user->id,
         ];
         return $data;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Services\CommentService;
 use Exception;
@@ -26,9 +27,9 @@ class CommentController extends Controller
     {
         try {
             $comment = $this->commentService->update($comment, $request->validated());
-            return $this->successResponse("comment updated successfully!", $comment);
+            return $this->successResponse("comment updated successfully!", new CommentResource($comment));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to update comment.");
+            return $this->errorResponse($e->getMessage());
         }
     }
 
@@ -56,7 +57,7 @@ class CommentController extends Controller
 
         try {
             $this->commentService->like($comment);
-            return $this->successResponse("comment liked successfully!");
+            return $this->successResponse("comment liked successfully!", new CommentResource($comment));
         } catch (Exception $e) {
             return $this->errorResponse("failed to like the comment.");
         }
@@ -70,8 +71,8 @@ class CommentController extends Controller
         $this->authorize('unlike', Comment::class);
 
         try {
-            $this->commentService->unlike($comment);
-            return $this->successResponse("comment unliked successfully!");
+            $comment = $this->commentService->unlike($comment);
+            return $this->successResponse("comment unliked successfully!", new CommentResource($comment));
         } catch (Exception $e) {
             return $this->errorResponse("failed to unlike the comment.");
         }

@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentService
 {
+    /**
+     * Reload comment with all needed relations and attributes
+     */
+    protected function loadCommentRelations(Comment $comment): Comment
+    {
+        $userId = Auth::id();
+
+        return $comment->loadMissing([
+            'user',
+            'user.image',
+        ])
+            ->loadCount('likes')
+            ->loadExists([
+                'likes as is_liked' => function ($q) use ($userId) {
+                    $q->where('user_id', $userId);
+                }
+            ]);
+    }
 
     /**
      * create new comment and analyze the sentiment
@@ -32,7 +50,7 @@ class CommentService
         }
 
         AnalyzeCommentSentiment::dispatch($comment);
-        return $comment;
+        return $this->loadCommentRelations($comment);
     }
 
     /**
@@ -54,7 +72,7 @@ class CommentService
                         $q->where('user_id', $userId);
                     }
                 ]);
-            }) 
+            })
             ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
             ->paginate(15);
 
@@ -66,6 +84,7 @@ class CommentService
      * 
      * @param Comment $comment
      * @param array $data
+     * @return Comment
      */
     public function update(Comment $comment, array $data)
     {
@@ -86,8 +105,8 @@ class CommentService
                 'rating' => round($newAvg, 1)
             ]);
         }
-        
-        return $comment;
+
+        return $this->loadCommentRelations($comment);
     }
 
     /**
@@ -104,6 +123,7 @@ class CommentService
      * like a comment
      * 
      * @param Comment $comment
+     * @return Comment
      */
     public function like(Comment $comment)
     {
@@ -111,12 +131,15 @@ class CommentService
 
         if (!$comment->isLikedBy($user))
             $comment->likes()->attach($user->id);
+
+        return $this->loadCommentRelations($comment);
     }
 
     /**
      * unlike a comment
      * 
      * @param Comment $comment
+     * @return Comment
      */
     public function unlike(Comment $comment)
     {
@@ -124,5 +147,7 @@ class CommentService
 
         if ($comment->isLikedBy($user))
             $comment->likes()->detach($user->id);
+
+        return $this->loadCommentRelations($comment);
     }
 }

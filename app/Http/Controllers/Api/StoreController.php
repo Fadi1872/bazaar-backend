@@ -115,7 +115,12 @@ class StoreController extends Controller
                 ->flatMap(fn($c) => $c['products']->toArray(request()))
                 ->values();
 
-            return $this->successResponse("store detailes", new StoreResource($store, $categories, $productsList));
+            $extra = [
+                'categories' => $categories,
+                'products' => $productsList
+            ];
+
+            return $this->successResponse("store detailes", new StoreResource($store, null, $extra));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
