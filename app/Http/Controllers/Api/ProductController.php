@@ -54,7 +54,7 @@ class ProductController extends Controller
             $product = $this->service->create($data, $image);
             return $this->successResponse("product created successfully.", $product);
         } catch (Exception $e) {
-            return $this->errorResponse("failed to create product.", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 

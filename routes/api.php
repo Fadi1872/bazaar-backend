@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BazaarCategoryController;
+use App\Http\Controllers\Api\BazaarController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProductCategoryController;
 use App\Http\Controllers\Api\ProductController;
@@ -18,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //? Auth Routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::delete('/profileImage', [AuthController::class, 'deleteProfileImage']);
-    
+
     // Profile Routes
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/me', [AuthController::class, 'update']);
@@ -51,4 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Bazaar Category Routes
     Route::apiResource('/bazaar-categories', BazaarCategoryController::class)->except(['show', 'update']);
+
+    // Bazaar Routes
+    Route::apiResource('/bazaars', BazaarController::class);
+    Route::post('/bazaars/{product}/comment', [BazaarController::class, 'addComment']);
+    Route::get('/bazaars/{product}/comments', [BazaarController::class, 'comments']);
 });

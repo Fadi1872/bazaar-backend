@@ -155,7 +155,7 @@ class ProductService
             }
 
             DB::commit();
-            return new ProductCardResource($product->load(['image', 'store', 'comments' => function ($query) {
+            return new ProductCardResource($product->load(['image', 'comments' => function ($query) {
                 $query->with('user')
                     ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
                     ->take(2);

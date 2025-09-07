@@ -22,8 +22,8 @@ class ProductCardResource extends JsonResource
             "status" => $this->created_at->lt(now()->subWeek()) ? null : "new",
             "price" => $this->price,
             "name" => $this->name,
-            "store_id" => $this->store->id,
-            "markerName" => $this->store->name,
+            "store_id" => $this->store?->id,
+            "markerName" => $this->store?->name,
             "category" => $this->category->name,
             "rating" => $this->rating,
             "comments" => $this->relationLoaded('comments')
