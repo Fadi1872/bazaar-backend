@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HasStoreForShowInStore;
 
 class UpdateProductRequest extends BaseRequest
 {
@@ -27,7 +28,7 @@ class UpdateProductRequest extends BaseRequest
             'price'               => ['sometimes', 'numeric', 'min:0'],
             'cost'                => ['sometimes', 'numeric', 'min:0', 'lte:price'],
             'stock_qty'           => ['sometimes', 'integer', 'min:0'],
-            'show_in_store'       => ['sometimes', 'boolean'],
+            'show_in_store'       => ['sometimes', 'boolean', new HasStoreForShowInStore()],
             'product_category_id' => ['sometimes', 'exists:product_categories,id'],
             'image'               => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'],
         ];

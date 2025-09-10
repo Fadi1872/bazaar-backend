@@ -22,7 +22,7 @@ class SearchProductRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'          => 'nullabale|max:255',
+            'name'          => 'nullable|max:255',
             'min_rating'    => 'nullable|numeric|min:0|max:5',
             'price_min'     => 'nullable|numeric|min:0',
             'price_max'     => 'nullable|numeric|min:0',

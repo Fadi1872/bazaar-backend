@@ -11,7 +11,7 @@ class SearchBazaarRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,6 +22,7 @@ class SearchBazaarRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'name'           => ['nullable', 'max:255'],
             'status' => [
                 'nullable',
                 Rule::in(['upcoming', 'ongoing', 'past']),
@@ -33,7 +34,8 @@ class SearchBazaarRequest extends BaseRequest
             'category_ids' => ['nullable', 'array'],
             'category_ids.*' => ['integer', 'exists:bazaar_categories,id'],
 
-            'city' => ['nullable', 'string', 'max:255'],
+            'cities'        => 'nullable|array',
+            'cities.*'      => 'string|max:255',
         ];
     }
 }

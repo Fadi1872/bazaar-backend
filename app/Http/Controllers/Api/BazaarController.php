@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchBazaarRequest;
+use App\Http\Requests\StoreBazaarRequest;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateBazaarRequesst;
 use App\Http\Resources\BazaarResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\ProductCardResource;
@@ -45,7 +47,7 @@ class BazaarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBazaarRequest $request)
     {
         try {
             $image = $request->file("image") ?? null;
@@ -54,13 +56,13 @@ class BazaarController extends Controller
             $bazaar = $this->service->create($data, $image);
             return $this->successResponse("bazaar created successfully.", $bazaar);
         } catch (Exception $e) {
-            return $this->errorResponse("failed to create bazaar", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
     public function show(Bazaar $bazaar)
     {
-        $this->authorize('view', Bazaar::class);
+        // $this->authorize('view', Bazaar::class);
 
         try {
             $userId = Auth::id();
@@ -125,7 +127,7 @@ class BazaarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bazaar $bazaar)
+    public function update(UpdateBazaarRequesst $request, Bazaar $bazaar)
     {
         try {
             $image = $request->file("image") ?? null;
@@ -134,7 +136,7 @@ class BazaarController extends Controller
             $bazaar = $this->service->update($bazaar, $data, $image);
             return $this->successResponse("bazaar updated", new BazaarResource($bazaar));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to update bazaar", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
@@ -143,7 +145,7 @@ class BazaarController extends Controller
      */
     public function destroy(Bazaar $bazaar)
     {
-        $this->authorize('delete', $bazaar);
+        // $this->authorize('delete', $bazaar);
 
         try {
             $this->service->delete($bazaar);

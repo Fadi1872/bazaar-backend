@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('bazaar_join_requests', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('bazaar_id')->constrained()->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->text("message");
+            $table->timestamp('reviewed_at')->nullable();
+            $table->timestamps();
+
+            $table->unique(['bazaar_id', 'store_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('bazaar_join_requests');
+    }
+};

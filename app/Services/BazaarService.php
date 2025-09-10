@@ -15,9 +15,13 @@ class BazaarService
 {
     protected function runFilterQuery(array $criteria, int $perPage, ?float $lng, ?float $lat)
     {
-        $bazaarsQuery = Bazaar::with(['user', 'category', 'image', 'address', 'comments'])
+        $bazaarsQuery = Bazaar::with(['user', 'category', 'image', 'address'])
             ->select('bazaars.*')
             ->leftJoin('addresses', 'bazaars.address_id', '=', 'addresses.id');
+
+        if (isset($criteria['name'])) {
+            $bazaarsQuery->where('bazaars.name', 'like', "%" . $criteria['name'] . "%");
+        }
 
         if (!empty($criteria['status'])) {
             $now = now();
@@ -35,8 +39,15 @@ class BazaarService
             }
         }
 
-        if (!empty($criteria['from_date']) && !empty($criteria['to_date'])) {
-            $bazaarsQuery->whereBetween('bazaars.start_date', [$criteria['from_date'], $criteria['to_date']]);
+        if (!empty($criteria['start_date']) && !empty($criteria['end_date'])) {
+            $bazaarsQuery->where(function ($query) use ($criteria) {
+                $query->where('bazaars.start_date', '<=', $criteria['end_date'])
+                    ->where('bazaars.end_date', '>=', $criteria['start_date']);
+            });
+        } elseif (!empty($criteria['start_date'])) {
+            $bazaarsQuery->where('bazaars.start_date', '>=', $criteria['start_date']);
+        } elseif (!empty($criteria['end_date'])) {
+            $bazaarsQuery->where('bazaars.start_date', '<=', $criteria['end_date']);
         }
 
         if (!empty($criteria['category_ids'])) {
@@ -139,19 +150,20 @@ class BazaarService
             $bazaar->update($data);
 
             if ($image) {
-                $storedImagePath = $storage->uploadImage($image, ImageStorage::BAZAAR_IMAGE);
 
                 if ($bazaar->image && Storage::disk('public')->exists($bazaar->image->path)) {
                     $storage->deleteImage($bazaar->image->path);
+                    $bazaar->image()->delete();
                 }
+                $storedImagePath = $storage->uploadImage($image, ImageStorage::BAZAAR_IMAGE);
 
-                $bazaar->image()->updateOrCreate([], [
+                $bazaar->image()->create([
                     "path" => $storedImagePath
                 ]);
             }
 
             DB::commit();
-            return $bazaar;
+            return $bazaar->refresh();
         } catch (Exception $e) {
             DB::rollBack();
             if ($storedImagePath && Storage::disk('public')->exists($storedImagePath)) {
@@ -173,6 +185,7 @@ class BazaarService
 
             if ($bazaar->image && Storage::disk('public')->exists($bazaar->image->path)) {
                 $storage->deleteImage($bazaar->image->path);
+                $bazaar->image()->delete();
             }
 
             $bazaar->comments()->delete();

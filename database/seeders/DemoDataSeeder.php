@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Address;
+use App\Models\Bazaar;
 use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -119,6 +121,67 @@ class DemoDataSeeder extends Seeder
             // Add comments to store
             $this->addCommentsAndUpdateRating($store, $allUsers);
         }
+        $allProducts = Product::all();
+        $allUsers = User::all();
+
+        $bazaarImages = [
+            'bazaar1.jpeg',
+            'bazaar2.jpeg',
+            'bazaar3.jpeg'
+        ];
+
+        $now = CarbonImmutable::now();
+
+        // Past Bazaar
+        $pastBazaar = Bazaar::create([
+            'name' => "Past Bazaar",
+            'description' => "This is a past bazaar with expired dates.",
+            'start_date' => $now->subDays(10),
+            'end_date' => $now->subDays(5),
+            'start_requesting_date' => $now->subDays(15),
+            'end_requesting_date' => $now->subDays(11),
+            'user_id' => $allUsers->random()->id,
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'location_type' => 'onsite',
+            'category_id' => 1, // بافتراض عندك bazaar_categories seeded
+        ]);
+        $this->attachImage($pastBazaar, "bazaars/{$bazaarImages[0]}");
+        $pastBazaar->products()->attach($allProducts->random(5)->pluck('id')->toArray());
+        $this->addCommentsAndUpdateRating($pastBazaar, $allUsers);
+
+        // Ongoing Bazaar
+        $ongoingBazaar = Bazaar::create([
+            'name' => "Ongoing Bazaar",
+            'description' => "This bazaar is currently active.",
+            'start_date' => $now->subDays(2),
+            'end_date' => $now->addDays(3),
+            'start_requesting_date' => $now->subDays(5),
+            'end_requesting_date' => $now->subDays(1),
+            'user_id' => $allUsers->random()->id,
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'location_type' => 'online',
+            'category_id' => 2,
+        ]);
+        $this->attachImage($ongoingBazaar, "bazaars/{$bazaarImages[1]}");
+        $ongoingBazaar->products()->attach($allProducts->random(6)->pluck('id')->toArray());
+        $this->addCommentsAndUpdateRating($ongoingBazaar, $allUsers);
+
+        // Upcoming Bazaar
+        $upcomingBazaar = Bazaar::create([
+            'name' => "Upcoming Bazaar",
+            'description' => "This bazaar will happen soon.",
+            'start_date' => $now->addDays(5),
+            'end_date' => $now->addDays(10),
+            'start_requesting_date' => $now->addDays(1),
+            'end_requesting_date' => $now->addDays(4),
+            'user_id' => $allUsers->random()->id,
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'location_type' => 'onsite',
+            'category_id' => 3,
+        ]);
+        $this->attachImage($upcomingBazaar, "bazaars/{$bazaarImages[2]}");
+        $upcomingBazaar->products()->attach($allProducts->random(7)->pluck('id')->toArray());
+        $this->addCommentsAndUpdateRating($upcomingBazaar, $allUsers);
     }
 
     private function attachImage($model, $relativePath)

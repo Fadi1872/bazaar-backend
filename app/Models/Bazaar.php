@@ -15,8 +15,16 @@ class Bazaar extends Model
         'end_requesting_date',
         'user_id',
         'address_id',
+        'location_type',
         'category_id',
         'positiveness'
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'start_requesting_date' => 'datetime',
+        'end_requesting_date' => 'datetime',
     ];
 
     /**
@@ -57,5 +65,14 @@ class Bazaar extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    /**
+     * A bazaar has many products
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'bazaar_product')
+            ->withTimestamps();
     }
 }

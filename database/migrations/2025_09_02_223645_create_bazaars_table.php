@@ -21,8 +21,11 @@ return new class extends Migration
             $table->timestamp('end_requesting_date')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('address_id')->constrained()->onDelete('restrict');
+            $table->enum('location_type', ['online', 'onsite']);
             $table->foreignId("category_id")->constrained("bazaar_categories")->onDelete('restrict');
             $table->unsignedTinyInteger('positiveness')->default(0);
+            $table->unsignedTinyInteger('rating')->default(0);
+            $table->unsignedBigInteger("rating_count")->default(0);
             $table->timestamps();
         });
     }

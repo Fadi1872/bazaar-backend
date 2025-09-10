@@ -16,7 +16,7 @@ class ProductService
     protected function runFilterQuery(array $criteria, int $perPage, ?float $lng, ?float $lat)
     {
         $productsQuery = Product::available()
-            ->with(['user', 'category', 'image', 'comments'])
+            ->with(['user', 'category', 'image'])
             ->select('products.*')
             ->join('stores', 'products.user_id', '=', 'stores.user_id')
             ->leftJoin('addresses', 'stores.address_id', '=', 'addresses.id');
@@ -228,6 +228,7 @@ class ProductService
 
             if ($product->image && Storage::disk('public')->exists($product->image->path)) {
                 $storage->deleteImage($product->image->path);
+                $product->image()->delete();
             }
 
             $product->comments()->delete();

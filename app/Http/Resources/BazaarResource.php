@@ -36,7 +36,9 @@ class BazaarResource extends JsonResource
             "address" => $this->address->city,
             "categories" => $this->productCat ?? [],
             "products" => $this->products ?? [],
-            "reviews" => CommentResource::collection($this->whenLoaded('comments')) ?? []
+            "reviews" => $this->relationLoaded('comments')
+                ? CommentResource::collection($this->comments)
+                : [],
         ];
     }
 

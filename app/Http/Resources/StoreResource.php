@@ -35,7 +35,9 @@ class StoreResource extends JsonResource
             "longitude" => $this->address->longitude,
             "storeNumber" => $this->address->phone_number,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
-            "reviews" => CommentResource::collection($this->comments ?? collect()),
+            "reviews" => $this->relationLoaded('comments')
+                ? CommentResource::collection($this->comments)
+                : [],
             "categories" => $this->productCat ?? [],
             "products" => $this->products ?? [],
         ];

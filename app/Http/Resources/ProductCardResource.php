@@ -28,7 +28,7 @@ class ProductCardResource extends JsonResource
             "rating" => $this->rating,
             "comments" => $this->relationLoaded('comments')
                 ? CommentResource::collection($this->comments)
-                : null,
+                : [],
             "oldPrice" => 0,
             "size" => ""
         ];
