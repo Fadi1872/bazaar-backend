@@ -58,4 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/own/bazaars', [BazaarController::class, 'MyBazaars']);
     Route::post('/bazaars/{bazaar}/comment', [BazaarController::class, 'addComment']);
     Route::get('/bazaars/{bazaar}/comments', [BazaarController::class, 'comments']);
+    Route::get('/bazaars/{bazaar}/products', [BazaarController::class, 'getCategoryProducts']);
+
 });

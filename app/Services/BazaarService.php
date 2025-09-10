@@ -105,6 +105,21 @@ class BazaarService
     }
 
     /**
+     * Get all products of a specific category in a given bazaar
+     *
+     * @param Bazaar $bazaar
+     * @param int $categoryId
+     * @return Collection
+     */
+    public function getCategoryProducts(Bazaar $bazaar, int $categoryId)
+    {
+        return $bazaar->products()
+            ->where('product_category_id', $categoryId)
+            ->with(['image', 'store'])
+            ->get();
+    }
+
+    /**
      * create new bazaar
      */
     public function create(array $data, UploadedFile | null $image)

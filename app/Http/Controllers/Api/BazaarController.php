@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetCategoryIdRequest;
 use App\Http\Requests\SearchBazaarRequest;
 use App\Http\Requests\StoreBazaarRequest;
 use App\Http\Requests\StoreCommentRequest;
@@ -122,6 +123,14 @@ class BazaarController extends Controller
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
+    }
+
+    /**
+     * get the product of category
+     */
+    public function getCategoryProducts(GetCategoryIdRequest $request, Bazaar $bazaar)
+    {
+        return $this->successResponse("products listed", ProductCardResource::collection($this->service->getCategoryProducts($bazaar, $request->validated()['category_id'])));
     }
 
 

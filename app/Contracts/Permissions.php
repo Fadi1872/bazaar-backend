@@ -26,6 +26,7 @@ abstract class Permissions
     public const DELETE_STORE = "delete store";
     public const COMMENT_ON_STORE = "comment on store";
     public const VIEW_STORE_COMMENTS = "view store comments";
+    public const VIEW_OWN_STORE = "view own store";
 
     // store category permissions
     public const VIEW_STORE_CATEGORY = "view store category";
@@ -46,6 +47,8 @@ abstract class Permissions
     public const DELETE_PRODUCTS = "delete products";
     public const COMMENT_ON_PRODUCTS = "comment on products";
     public const VIEW_PRODUCT_COMMENTS = "view product comments";
+    public const VIEW_OWN_PRODUCTS = "view own products";
+
 
     // bazaar category permissions
     public const VIEW_BAZAAR_CATEGORY = "view bazaar category";
@@ -86,6 +89,7 @@ abstract class Permissions
             Permissions::DELETE_STORE,
             Permissions::COMMENT_ON_STORE,
             Permissions::VIEW_STORE_COMMENTS,
+            Permissions::VIEW_OWN_STORE,
 
             Permissions::VIEW_STORE_CATEGORY,
             Permissions::CREATE_STORE_CATEGORY,
@@ -103,6 +107,7 @@ abstract class Permissions
             Permissions::DELETE_PRODUCTS,
             Permissions::COMMENT_ON_PRODUCTS,
             Permissions::VIEW_PRODUCT_COMMENTS,
+            Permissions::VIEW_OWN_PRODUCTS,
 
             Permissions::VIEW_BAZAAR_CATEGORY,
             Permissions::CREATE_BAZAAR_CATEGORY,

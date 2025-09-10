@@ -60,6 +60,7 @@ class RoleHasPermissionsSeeder extends Seeder
                 Permissions::DELETE_STORE,
                 Permissions::COMMENT_ON_STORE,
                 Permissions::VIEW_STORE_COMMENTS,
+                Permissions::VIEW_OWN_STORE,
 
                 Permissions::UPDATE_COMMENT,
                 Permissions::DELETE_COMMENT,
@@ -76,6 +77,7 @@ class RoleHasPermissionsSeeder extends Seeder
                 Permissions::DELETE_PRODUCTS,
                 Permissions::COMMENT_ON_PRODUCTS,
                 Permissions::VIEW_PRODUCT_COMMENTS,
+                Permissions::VIEW_OWN_PRODUCTS,
 
                 Permissions::VIEW_ALL_BAZAARS,
                 Permissions::VIEW_BAZAAR_DETAILS,

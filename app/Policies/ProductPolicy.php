@@ -32,6 +32,14 @@ class ProductPolicy
     }
 
     /**
+     * Determine whether the user can view the model.
+     */
+    public function viewOwn(User $user): bool
+    {
+        return $user->hasPermissionTo(Permissions::VIEW_OWN_PRODUCTS);
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
