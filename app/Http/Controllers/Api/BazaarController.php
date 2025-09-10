@@ -166,10 +166,10 @@ class BazaarController extends Controller
         try {
             $user = Auth::user();
 
-            $bazaars = $user->bazaars()->load(['address', 'image']);
+            $bazaars = $user->bazaars->load(['address', 'image']);
             return $this->successResponse("own bazaars listed", BazaarResource::collection($bazaars));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to list own products");
+            return $this->errorResponse($e->getMessage());
         }
     }
 
