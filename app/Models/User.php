@@ -90,4 +90,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * get the user bazaars
+     */
+    public function bazaars()
+    {
+        return $this->hasMany(Bazaar::class);
+    }
 }

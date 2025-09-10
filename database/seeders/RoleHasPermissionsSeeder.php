@@ -44,6 +44,8 @@ class RoleHasPermissionsSeeder extends Seeder
                 Permissions::VIEW_BAZAAR_DETAILS,
                 Permissions::COMMENT_ON_BAZAAR,
                 Permissions::VIEW_BAZAAR_COMMENTS,
+                
+                Permissions::VIEW_BAZAAR_CATEGORY,
             ],
             Roles::SELLER => [
                 Permissions::VIEW_OWN_ADDRESSES,
@@ -74,6 +76,18 @@ class RoleHasPermissionsSeeder extends Seeder
                 Permissions::DELETE_PRODUCTS,
                 Permissions::COMMENT_ON_PRODUCTS,
                 Permissions::VIEW_PRODUCT_COMMENTS,
+
+                Permissions::VIEW_ALL_BAZAARS,
+                Permissions::VIEW_BAZAAR_DETAILS,
+                Permissions::CREATE_BAZAAR,
+                Permissions::UPDATE_BAZAAR,
+                Permissions::DELETE_BAZAAR,
+                Permissions::COMMENT_ON_BAZAAR,
+                Permissions::VIEW_BAZAAR_COMMENTS,
+                Permissions::VIEW_OWN_BAZAARS,
+
+                Permissions::VIEW_BAZAAR_CATEGORY,
+                Permissions::CREATE_BAZAAR_CATEGORY,
             ]
         ];
 

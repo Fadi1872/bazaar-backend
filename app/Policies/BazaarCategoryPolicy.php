@@ -3,12 +3,19 @@
 namespace App\Policies;
 
 use app\Contracts\Permissions;
+use app\Contracts\Roles;
 use App\Models\BazaarCategory;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class BazaarCategoryPolicy
 {
+    public function before(User $user)
+    {
+        if ($user->hasRole(Roles::ADMIN))
+            return true;
+    }
+    
     /**
      * Determine whether the user can view any models.
      */

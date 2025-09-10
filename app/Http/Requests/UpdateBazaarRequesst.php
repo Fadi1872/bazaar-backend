@@ -10,7 +10,8 @@ class UpdateBazaarRequesst extends BaseRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $bazaar = $this->route('bazaar');
+        return $this->user()->can('update', $bazaar);
     }
 
     /**

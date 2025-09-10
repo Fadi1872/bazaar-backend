@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Bazaar;
 use Illuminate\Validation\Rule;
 
 class SearchBazaarRequest extends BaseRequest
@@ -11,7 +12,7 @@ class SearchBazaarRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('viewAny', Bazaar::class);
     }
 
     /**

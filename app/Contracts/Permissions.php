@@ -60,6 +60,7 @@ abstract class Permissions
     public const DELETE_BAZAAR = "delete bazaar";
     public const COMMENT_ON_BAZAAR = "comment on bazaar";
     public const VIEW_BAZAAR_COMMENTS = "view bazaar comments";
+    public const VIEW_OWN_BAZAARS = "view own bazaars";
 
 
 
@@ -114,6 +115,7 @@ abstract class Permissions
             Permissions::DELETE_BAZAAR,
             Permissions::COMMENT_ON_BAZAAR,
             Permissions::VIEW_BAZAAR_COMMENTS,
+            Permissions::VIEW_OWN_BAZAARS
         ];
     }
 }

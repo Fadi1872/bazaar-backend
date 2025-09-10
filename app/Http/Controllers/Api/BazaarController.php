@@ -62,7 +62,7 @@ class BazaarController extends Controller
 
     public function show(Bazaar $bazaar)
     {
-        // $this->authorize('view', Bazaar::class);
+        $this->authorize('view', $bazaar);
 
         try {
             $userId = Auth::id();
@@ -145,13 +145,30 @@ class BazaarController extends Controller
      */
     public function destroy(Bazaar $bazaar)
     {
-        // $this->authorize('delete', $bazaar);
+        $this->authorize('delete', $bazaar);
 
         try {
             $this->service->delete($bazaar);
             return $this->successResponse("bazaar deleted");
         } catch (Exception $e) {
             return $this->errorResponse("failed to delete bazaar", 500);
+        }
+    }
+
+    /**
+     * View own bazaars
+     */
+    public function MyBazaars()
+    {
+        $this->authorize('viewOwn', Bazaar::class);
+
+        try {
+            $user = Auth::user();
+
+            $bazaars = $user->bazaars()->load(['address', 'image']);
+            return $this->successResponse("own bazaars listed", BazaarResource::collection($bazaars));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to list own products");
         }
     }
 

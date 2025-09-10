@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Address;
+use App\Models\Bazaar;
 use App\Models\BazaarCategory;
 use App\Models\Comment;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use App\Models\StoreCategory;
 use App\Models\User;
 use App\Policies\AddressPolicy;
 use App\Policies\BazaarCategoryPolicy;
+use App\Policies\BazaarPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\StoreCategoryPolicy;
@@ -41,5 +43,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Comment::class, CommentPolicy::class);
         Gate::policy(Product::class, ProductPolicy::class);
         Gate::policy(BazaarCategory::class, BazaarCategoryPolicy::class);
+        Gate::policy(Bazaar::class, BazaarPolicy::class);
     }
 }

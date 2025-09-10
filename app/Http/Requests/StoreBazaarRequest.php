@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Bazaar;
 
 class StoreBazaarRequest extends BaseRequest
 {
@@ -10,7 +11,7 @@ class StoreBazaarRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Bazaar::class);
     }
 
     /**

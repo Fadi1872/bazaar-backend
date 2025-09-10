@@ -18,8 +18,6 @@ return new class extends Migration
             $table->text("message");
             $table->timestamp('reviewed_at')->nullable();
             $table->timestamps();
-
-            $table->unique(['bazaar_id', 'store_id']);
         });
     }
 
