@@ -11,6 +11,7 @@ use App\Http\Resources\BazaarResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\ProductCardResource;
 use App\Models\Bazaar;
+use App\Models\Store;
 use App\Services\BazaarService;
 use App\Services\CommentService;
 use Exception;
@@ -181,7 +182,7 @@ class BazaarController extends Controller
             $comment = $this->commentService->create($bazaar, $request->validated());
             return $this->successResponse("comment added", new CommentResource($comment->load('user')));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to add comment", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 

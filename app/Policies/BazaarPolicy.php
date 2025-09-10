@@ -63,4 +63,12 @@ class BazaarPolicy
     {
         return $user->hasPermissionTo(Permissions::DELETE_BAZAAR) && $user->id == $bazaar->user_id;;
     }
+
+    /**
+     * Determine whether the user can view all comments on the store.
+     */
+    public function viewComments(User $user): bool
+    {
+        return $user->can(Permissions::VIEW_STORE_COMMENTS);
+    } 
 }
