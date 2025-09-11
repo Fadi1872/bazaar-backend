@@ -8,10 +8,19 @@ class BazaarJoinRequest extends Model
 {
     protected $fillable = [
         'bazaar_id',
+        'user_id',
         'status',
         'message',
         'reviewed_at',
     ];
+
+    /**
+     * get the user that added the request
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * The bazaar this request belongs to.
@@ -24,7 +33,7 @@ class BazaarJoinRequest extends Model
     /**
      * Products attached to this join request.
      */
-    public function products()
+    public function requestProducts()
     {
         return $this->hasMany(BazaarRequestProduct::class, 'join_request_id');
     }

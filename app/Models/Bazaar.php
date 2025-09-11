@@ -75,4 +75,12 @@ class Bazaar extends Model
         return $this->belongsToMany(Product::class, 'bazaar_product')
             ->withTimestamps();
     }
+
+    /**'
+     * get the join reqeusts
+     */
+    public function joinRequests()
+    {
+        return $this->hasMany(BazaarJoinRequest::class);
+    }
 }

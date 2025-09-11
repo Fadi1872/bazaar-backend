@@ -172,7 +172,7 @@ class DemoDataSeeder extends Seeder
             'description' => "This bazaar will happen soon.",
             'start_date' => $now->addDays(5),
             'end_date' => $now->addDays(10),
-            'start_requesting_date' => $now->addDays(1),
+            'start_requesting_date' => $now->subDay(1),
             'end_requesting_date' => $now->addDays(4),
             'user_id' => $allUsers->random()->id,
             'address_id' => Address::inRandomOrder()->first()->id,

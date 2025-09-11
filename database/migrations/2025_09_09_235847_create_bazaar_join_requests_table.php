@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('bazaar_join_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bazaar_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->text("message");
             $table->timestamp('reviewed_at')->nullable();

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BazaarCategoryController;
 use App\Http\Controllers\Api\BazaarController;
+use App\Http\Controllers\Api\BazaarJoinRequestController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProductCategoryController;
 use App\Http\Controllers\Api\ProductController;
@@ -60,4 +62,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bazaars/{bazaar}/comments', [BazaarController::class, 'comments']);
     Route::get('/bazaars/{bazaar}/products', [BazaarController::class, 'getCategoryProducts']);
 
+    Route::get('bazaars/{bazaar}/requests', [BazaarJoinRequestController::class, 'index']);
+
+    // Bazaar Join Request Routes
+    Route::post('bazaars/{bazaar}/requests', [BazaarJoinRequestController::class, 'store']);
+    Route::get('requests/{joinRequest}', [BazaarJoinRequestController::class, 'show']);
+    Route::put('requests/{joinRequest}', [BazaarJoinRequestController::class, 'update']);
+    Route::delete('requests/{joinRequest}', [BazaarJoinRequestController::class, 'destroy']);
+    Route::post('requests/{joinRequest}/accept', [BazaarJoinRequestController::class, 'accept']);
+    Route::post('requests/{joinRequest}/reject', [BazaarJoinRequestController::class, 'reject']);
+
+    // Cart Routes
+    Route::get('/', [CartController::class, 'index']);
+    Route::post('/add/{product}', [CartController::class, 'addItem']);
+    Route::post('/remove/{product}', [CartController::class, 'removeOne']);
+    Route::delete('/remove/{product}', [CartController::class, 'deleteItem']);
 });
