@@ -18,7 +18,7 @@ class HasStoreForShowInStore implements ValidationRule
         $user = Auth::user();
 
         // Only validate if true
-        if ($value === true && !$user?->store()->exists()) {
+        if (filter_var($value, FILTER_VALIDATE_BOOLEAN) && !$user?->store()->exists()) {
             $fail("You must create a store before setting {$attribute} to true.");
         }
     }

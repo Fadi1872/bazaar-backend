@@ -29,7 +29,7 @@ class StoreProductRequest extends BaseRequest
             'cost'                => ['required', 'numeric', 'min:0', 'lte:price'],
             'stock_qty'           => ['required', 'integer', 'min:0'],
             'show_in_store'       => ['sometimes', 'boolean', new HasStoreForShowInStore()],
-            'product_category_id' => ['required', 'exists:product_categories,id'],
+            'product_category'    => ['required', 'string', 'max:255'],
             'image'               => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'],
         ];
     }

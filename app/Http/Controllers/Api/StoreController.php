@@ -57,7 +57,7 @@ class StoreController extends Controller
             $store = $this->service->createStore($data, $image);
             return $this->successResponse("store created", new StoreResource($store->load('address', 'image', 'category')));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to create store", 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
@@ -132,6 +132,64 @@ class StoreController extends Controller
     public function getCategoryProducts(GetCategoryIdRequest $request, Store $store)
     {
         return $this->successResponse("products listed", $this->service->getCategoryProducts($store, $request->validated()['category_id']));
+    }
+
+    /**
+     * get own store
+     */
+    public function ownStore()
+    {
+        try {
+            $store = Auth::user()->store;
+            $userId = Auth::id();
+
+            $store->load([
+                'address',
+                'image',
+                'category',
+                'comments' =>  function ($query) use ($userId) {
+                    $query->with('user', 'user.image')
+                        ->withCount('likes')
+                        ->when($userId, function ($q) use ($userId) {
+                            $q->withExists([
+                                'likes as is_liked' => function ($sub) use ($userId) {
+                                    $sub->where('user_id', $userId);
+                                }
+                            ]);
+                        })
+                        ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
+                        ->take(2);
+                }
+            ]);
+
+            $products = Product::with(['image', 'store'])
+                ->whereHas('user', fn($q) => $q->where('user_id', $store->user_id))
+                ->get();
+
+
+            $categoriesGrouped  = $products
+                ->groupBy('product_category_id')
+                ->map(function ($products) {
+                    $category = $products->first()->category;
+                    return [
+                        'id'       => $category->id,
+                        'name'     => $category->name
+                    ];
+                });
+
+            $categories = $categoriesGrouped->map(fn($c) => [
+                'id'   => $c['id'],
+                'name' => $c['name'],
+            ])->values();
+
+            $extra = [
+                'categories' => $categories,
+            ];
+
+            return $this->successResponse("own store", new StoreResource($store, null, $extra));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to get own sotre");
+        }
     }
 
     /**

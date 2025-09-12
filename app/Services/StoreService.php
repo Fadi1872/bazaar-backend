@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\ProductCardResource;
 use App\Models\Product;
 use App\Models\Store;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,7 @@ class StoreService
         DB::beginTransaction();
         $storedImagePath = null;
         try {
+            if(Auth::user()->store()->exists()) throw new Exception("you already have a store");
             $data['user_id'] = Auth::id();
             $store = Store::create($data);
             $storage = new ImageStorage();

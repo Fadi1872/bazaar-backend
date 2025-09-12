@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddItemRequest;
+use App\Http\Requests\StoreCartItemRequest;
+use App\Http\Resources\CartItemResource;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Services\CartService;
@@ -27,7 +30,7 @@ class CartController extends Controller
         try {
             $cart = $this->cartService->getUserCart();
 
-            return $this->successResponse('Cart retrieved successfully.', $cart->load('items.product'));
+            return $this->successResponse('Cart retrieved successfully.', new CartResource($cart->load('items.product')));
         } catch (Exception $e) {
             return $this->errorResponse('faild to retieve cart.');
         }
@@ -36,12 +39,12 @@ class CartController extends Controller
     /**
      * Add a product to the cart
      */
-    public function addItem(Product $product)
+    public function addItem(StoreCartItemRequest $request, Product $product)
     {
         try {
-            $cart = $this->cartService->addItem($product);
+            $item = $this->cartService->addItem($product);
 
-            return $this->successResponse('Product added to cart successfully.', $cart);
+            return $this->successResponse('Product added to cart successfully.', new CartItemResource($item));
         } catch (Exception $e) {
             return $this->errorResponse('failed to add product.');
         }
@@ -53,9 +56,9 @@ class CartController extends Controller
     public function removeOne(Product $product)
     {
         try {
-            $cart = $this->cartService->removeOne($product);
+            $item = $this->cartService->removeOne($product);
 
-            return $this->successResponse('One item removed from cart.', $cart);
+            return $this->successResponse('One item removed from cart.', new CartItemResource($item));
         } catch (Exception $e) {
             return $this->errorResponse('failed to remove item.');
         }
@@ -69,7 +72,7 @@ class CartController extends Controller
         try {
             $cart = $this->cartService->deleteItem($product);
 
-            return $this->successResponse('Product removed from cart completely.', $cart);
+            return $this->successResponse('Product removed from cart completely.', new CartResource($cart->load('items.product')));
         } catch (Exception $e) {
             return $this->errorResponse('failed to remove product.');
         }

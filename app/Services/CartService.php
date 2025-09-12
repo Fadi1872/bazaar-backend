@@ -23,7 +23,7 @@ class CartService
     /**
      * Add an item to the cart
      */
-    public function addItem(Product $product, int $quantity = 1): Cart
+    public function addItem(Product $product, int $bazaarId, int $quantity = 1)
     {
         $cart = $this->getUserCart();
 
@@ -44,13 +44,13 @@ class CartService
             ]);
         }
 
-        return $cart->load('items.product');
+        return $item->load('product');
     }
 
     /**
      * Remove one unit of an item from the cart
      */
-    public function removeOne(Product $product): Cart
+    public function removeOne(Product $product)
     {
         $cart = $this->getUserCart();
 
@@ -64,7 +64,7 @@ class CartService
             }
         }
 
-        return $cart->load('items.product');
+        return $item->load('product');
     }
 
     /**

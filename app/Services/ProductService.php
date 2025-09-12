@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\ProductCardResource;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -144,6 +145,12 @@ class ProductService
         $storedImagePath = null;
 
         try {
+            $category = ProductCategory::firstOrCreate([
+                "name" => $data['product_category']
+            ]);
+            unset($data['product_category']);
+            $data['product_category_id'] = $category->id;
+
             $data['user_id'] = Auth::id();
             $product = Product::create($data);
             $storage = new ImageStorage();

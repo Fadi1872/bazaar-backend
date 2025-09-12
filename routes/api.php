@@ -35,9 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Store Routes
     Route::apiResource('/stores', StoreController::class);
+    Route::get('/own/store', [StoreController::class, 'ownStore']);
+    Route::get('/stores/{store}/products', [StoreController::class, 'getCategoryProducts']);
     Route::post('/stores/{store}/comment', [StoreController::class, 'addComment']);
     Route::get('/stores/{store}/comments', [StoreController::class, 'comments']);
-    Route::get('/stores/{store}/products', [StoreController::class, 'getCategoryProducts']);
 
     // Comment Routes
     Route::apiResource('/comments', CommentController::class)->except(['index', 'store', 'show']);
@@ -62,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bazaars/{bazaar}/comment', [BazaarController::class, 'addComment']);
     Route::get('/bazaars/{bazaar}/comments', [BazaarController::class, 'comments']);
     Route::get('/bazaars/{bazaar}/products', [BazaarController::class, 'getCategoryProducts']);
+    Route::get('/own/bazaars', [BazaarController::class, 'ownBazaar']);
 
     Route::get('bazaars/{bazaar}/requests', [BazaarJoinRequestController::class, 'index']);
 
