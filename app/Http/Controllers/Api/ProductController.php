@@ -154,9 +154,9 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         try {
-            return $this->successResponse("own products listed", ProductCardResource::collection($user->products->load(['image', 'category'])));
+            return $this->successResponse("own products listed", ProductCardResource::collection($user->products->load(['image', 'category', 'store'])));
         } catch (Exception $e) {
-            return $this->errorResponse("failed to get products");
+            return $this->errorResponse($e->getMessage());
         }
     }
 }
