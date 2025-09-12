@@ -146,4 +146,17 @@ class ProductController extends Controller
             return $this->errorResponse("failed to list comments", 500);
         }
     }
+
+    /**
+     * get own products
+     */
+    public function ownProducts()
+    {
+        $user = Auth::user();
+        try {
+            return $this->successResponse("own products listed", ProductCardResource::collection($user->products->load(['image', 'category'])));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to get products");
+        }
+    }
 }

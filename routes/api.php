@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Products Routes
     Route::apiResource('/products', ProductController::class);
+    Route::get('/own/products', [ProductController::class, 'ownProducts']);
     Route::post('/products/{product}/comment', [ProductController::class, 'addComment']);
     Route::get('/products/{product}/comments', [ProductController::class, 'comments']);
 
