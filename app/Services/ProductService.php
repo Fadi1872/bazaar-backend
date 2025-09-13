@@ -191,6 +191,14 @@ class ProductService
         $storage = new ImageStorage();
 
         try {
+            if (isset($data['product_category'])) {
+                $category = ProductCategory::firstOrCreate([
+                    "name" => $data['product_category']
+                ]);
+                unset($data['product_category']);
+                $data['product_category_id'] = $category->id;
+            }
+
             $product->update($data);
 
             if ($image) {
@@ -206,7 +214,11 @@ class ProductService
             }
 
             DB::commit();
-            return $product;
+            return new ProductCardResource($product->load(['image', 'comments' => function ($query) {
+                $query->with('user')
+                    ->orderByRaw("FIELD(sentiment, 'positive', 'neutral', 'negative')")
+                    ->take(2);
+            }]));
         } catch (Exception $e) {
             DB::rollBack();
 

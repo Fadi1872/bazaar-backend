@@ -30,7 +30,7 @@ class UpdateBazaarRequesst extends BaseRequest
             'end_requesting_date'   => ['nullable', 'date', 'after_or_equal:start_requesting_date'],
             'address_id'            => ['nullable', 'integer', 'exists:addresses,id'],
             'location_type'         => ['nullable', 'in:online,onsite'],
-            'category_id'           => ['nullable', 'integer', 'exists:bazaar_categories,id'],
+            'category'              => ['nullable', 'string', 'max:255'],
             'image'                 => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\BazaarResource;
 use App\Models\Bazaar;
+use App\Models\BazaarCategory;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -128,6 +129,12 @@ class BazaarService
         $storedImagePath = null;
 
         try {
+            $category = BazaarCategory::firstOrCreate([
+                "name" => $data['category']
+            ]);
+            unset($data['category']);
+            $data['category_id'] = $category->id;
+
             $data['user_id'] = Auth::id();
 
             $bazaar = Bazaar::create($data);
@@ -162,6 +169,13 @@ class BazaarService
         $storage = new ImageStorage();
 
         try {
+            if (isset($data['category'])) {
+                $category = BazaarCategory::firstOrCreate([
+                "name" => $data['category']
+            ]);
+            unset($data['category']);
+            $data['category_id'] = $category->id;
+            }
             $bazaar->update($data);
 
             if ($image) {

@@ -47,7 +47,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        try {
+        try { 
             $image = $request->file("image") ?? null;
             $data = $request->validated();
             unset($data['image']);

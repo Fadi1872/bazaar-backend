@@ -30,7 +30,7 @@ class StoreBazaarRequest extends BaseRequest
             'end_requesting_date'   => ['required', 'date', 'after_or_equal:start_requesting_date'],
             'address_id'            => ['required', 'integer', 'exists:addresses,id'],
             'location_type'         => ['required', 'in:online,onsite'],
-            'category_id'           => ['required', 'integer', 'exists:bazaar_categories,id'],
+            'category'              => ['required', 'string', 'max:255'],
             'image'                 => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
         ];
     }

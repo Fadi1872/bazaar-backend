@@ -24,7 +24,7 @@ class UpdateStoreRequest extends BaseRequest
         return [
             'name'              => ['required', 'string', 'max:255'],
             'description'       => ['required', 'string', 'max:10000'],
-            'store_category_id' => ['required', 'exists:store_categories,id'],
+            'store_category'    => ['required', 'string', 'max:255'],
             'location_type'     => ['required', 'in:online,onsite'],
             'address_id'        => ['nullable', 'exists:addresses,id'],
             'image'             => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:4096'],

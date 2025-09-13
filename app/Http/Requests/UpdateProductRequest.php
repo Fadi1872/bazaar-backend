@@ -29,7 +29,7 @@ class UpdateProductRequest extends BaseRequest
             'cost'                => ['sometimes', 'numeric', 'min:0', 'lte:price'],
             'stock_qty'           => ['sometimes', 'integer', 'min:0'],
             'show_in_store'       => ['sometimes', 'boolean', new HasStoreForShowInStore()],
-            'product_category_id' => ['sometimes', 'exists:product_categories,id'],
+            'product_category'    => ['sometimes', 'string', 'max:255'],
             'image'               => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'],
         ];
     }
