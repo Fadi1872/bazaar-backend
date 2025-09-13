@@ -25,7 +25,7 @@ class CartService
      */
     public function addItem(Product $product, int $bazaarId, int $quantity = 1)
     {
-        $cart = $this->getUserCart();
+        $cart = $this->getUserCart(); 
 
         $item = $cart->items()->where('product_id', $product->id)->first();
 
@@ -40,6 +40,7 @@ class CartService
         } else {
             $cart->items()->create([
                 'product_id' => $product->id,
+                'bazaar_id' => $bazaarId,
                 'quantity'   => $quantity,
             ]);
         }

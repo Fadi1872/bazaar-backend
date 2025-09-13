@@ -42,7 +42,7 @@ class CartController extends Controller
     public function addItem(StoreCartItemRequest $request, Product $product)
     {
         try {
-            $item = $this->cartService->addItem($product);
+            $item = $this->cartService->addItem($product, $request['isFromBazaar']);
 
             return $this->successResponse('Product added to cart successfully.', new CartItemResource($item));
         } catch (Exception $e) {
