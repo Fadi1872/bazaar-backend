@@ -23,7 +23,7 @@ class CartService
     /**
      * Add an item to the cart
      */
-    public function addItem(Product $product, int $bazaarId, int $quantity = 1)
+    public function addItem(Product $product, int | null $bazaarId, int $quantity = 1)
     {
         $cart = $this->getUserCart(); 
 
@@ -38,7 +38,7 @@ class CartService
         if ($item) {
             $item->increment('quantity', $quantity);
         } else {
-            $cart->items()->create([
+            $item = $cart->items()->create([
                 'product_id' => $product->id,
                 'bazaar_id' => $bazaarId,
                 'quantity'   => $quantity,
