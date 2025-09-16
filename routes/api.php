@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BazaarJoinRequestController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckOutController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\ProductCategoryController;
 use App\Http\Controllers\Api\ProductController;
@@ -91,4 +92,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Payment Methods Routes
     Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
+
+    // Orders Routes
+    Route::get('orders', [OrderController::class, 'index']);
+    Route::get('orders/{id}', [OrderController::class, 'show']);
 });
