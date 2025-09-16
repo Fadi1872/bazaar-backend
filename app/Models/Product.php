@@ -51,6 +51,11 @@ class Product extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
     /**
      * Get the store that owns this product (through the user).
      */
@@ -73,5 +78,10 @@ class Product extends Model
     {
         return $query->where('show_in_store', true)
             ->where('stock_qty', '>', 0);
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favorites()->where('user_id', $userId)->exists();
     }
 }

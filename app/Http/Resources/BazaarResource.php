@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Services\ImageStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class BazaarResource extends JsonResource
 {
@@ -25,6 +26,8 @@ class BazaarResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $status = $this->getStatus();
+    
         return [
             "id" => $this->id,
             "image" => $this->image ? ImageStorage::getUrl($this->image->path) : null,
@@ -32,13 +35,14 @@ class BazaarResource extends JsonResource
             "details" => $this->description,
             "firstDate" => $this->start_date ? $this->start_date->format('d M, Y') : null,
             "lastDate" => $this->end_date ? $this->end_date->format('d M, Y') : null,
-            "status" => $this->getStatus(),
+            "status" => $status,
             "address" => $this->address->city,
             "categories" => $this->productCat ?? [],
-            "products" => $this->products ?? [],
+            "products" => $status === 'upcoming' ? [] : ($this->products ?? []),
             "reviews" => $this->relationLoaded('comments')
                 ? CommentResource::collection($this->comments)
                 : [],
+            "isFavorite" => $this->isFavoritedBy(Auth::id())
         ];
     }
 

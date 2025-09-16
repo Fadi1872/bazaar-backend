@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Services\ImageStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ProductCardResource extends JsonResource
 {
@@ -30,7 +31,8 @@ class ProductCardResource extends JsonResource
                 ? CommentResource::collection($this->comments)
                 : [],
             "oldPrice" => 0,
-            "size" => ""
+            "size" => "",
+            "isFavorite" => $this->isFavoritedBy(Auth::id())
         ];
     }
 }

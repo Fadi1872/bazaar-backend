@@ -98,4 +98,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Bazaar::class);
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function favoriteBazaars()
+    {
+        return $this->morphedByMany(Bazaar::class, 'favoritable', 'favorites');
+    }
+
+    public function favoriteStores()
+    {
+        return $this->morphedByMany(Store::class, 'favoritable', 'favorites');
+    }
+
+    public function favoriteProducts()
+    {
+        return $this->morphedByMany(Product::class, 'favoritable', 'favorites');
+    }
 }

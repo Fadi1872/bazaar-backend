@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/stores/{store}/products', [StoreController::class, 'getCategoryProducts']);
     Route::post('/stores/{store}/comment', [StoreController::class, 'addComment']);
     Route::get('/stores/{store}/comments', [StoreController::class, 'comments']);
+    Route::post('/stores/{store}/favorite', [StoreController::class, 'toggleStore']);
 
     // Comment Routes
     Route::apiResource('/comments', CommentController::class)->except(['index', 'store', 'show']);
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/own/products', [ProductController::class, 'ownProducts']);
     Route::post('/products/{product}/comment', [ProductController::class, 'addComment']);
     Route::get('/products/{product}/comments', [ProductController::class, 'comments']);
+    Route::post('/products/{product}/favorite', [ProductController::class, 'toggleProduct']);
 
     // Bazaar Category Routes
     Route::apiResource('/bazaar-categories', BazaarCategoryController::class)->except(['show', 'update']);
@@ -65,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bazaars/{bazaar}/comment', [BazaarController::class, 'addComment']);
     Route::get('/bazaars/{bazaar}/comments', [BazaarController::class, 'comments']);
     Route::get('/bazaars/{bazaar}/products', [BazaarController::class, 'getCategoryProducts']);
+    Route::post('/bazaars/{bazaar}/favorite', [BazaarController::class, 'toggleBazaar']);
     Route::get('/own/bazaars', [BazaarController::class, 'ownBazaar']);
 
     Route::get('bazaars/{bazaar}/requests', [BazaarJoinRequestController::class, 'index']);

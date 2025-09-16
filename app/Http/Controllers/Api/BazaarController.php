@@ -15,6 +15,7 @@ use App\Models\Bazaar;
 use App\Models\Store;
 use App\Services\BazaarService;
 use App\Services\CommentService;
+use App\Services\FavoriteService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -207,6 +208,17 @@ class BazaarController extends Controller
             return $this->successResponse("comments listed", CommentResource::collection($comments));
         } catch (Exception $e) {
             return $this->errorResponse("failed to list comments", 500);
+        }
+    }
+
+    public function toggleBazaar(Bazaar $bazaar, FavoriteService $service)
+    {
+        try {
+            $added = $service->toggleFavorite($bazaar, Auth::user());
+
+            return $this->successResponse("favorite added successfully");
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to add to favorite");
         }
     }
 }

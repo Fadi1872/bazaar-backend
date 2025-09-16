@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Bazaar;
 use App\Models\Comment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -46,5 +47,20 @@ class AnalyzeCommentSentiment implements ShouldQueue
         } else {
             logger()->warning('Invalid sentiment result:', ['output' => $output]);
         }
+
+        $model = $this->comment->commentable;
+        if ($model instanceof Bazaar) {
+            $this->updateBazaarPositiveness($model);
+        }
+    }
+
+    protected function updateBazaarPositiveness(Bazaar $bazaar): void
+    {
+        $total = $bazaar->comments()->count();
+        $positive = $bazaar->comments()->where('sentiment', 'positive')->count();
+
+        $positiveness = $total > 0 ? ($positive / $total) * 100 : 0;
+
+        $bazaar->update(['positiveness' => $positiveness]);
     }
 }

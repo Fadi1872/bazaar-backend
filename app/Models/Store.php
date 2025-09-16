@@ -56,6 +56,11 @@ class Store extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
     /**
      * get the store products
      */
@@ -70,5 +75,10 @@ class Store extends Model
             'id'
         )->where('show_in_store', true)
             ->where('stock_qty', '>', 0);
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favorites()->where('user_id', $userId)->exists();
     }
 }

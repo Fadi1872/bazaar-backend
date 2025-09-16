@@ -11,6 +11,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\ProductCardResource;
 use App\Models\Product;
 use App\Services\CommentService;
+use App\Services\FavoriteService;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -155,6 +156,17 @@ class ProductController extends Controller
         $user = Auth::user();
         try {
             return $this->successResponse("own products listed", ProductCardResource::collection($user->products->load(['image', 'category', 'store'])));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function toggleProduct(Product $product, FavoriteService $service)
+    {
+        try {
+            $added = $service->toggleFavorite($product, Auth::user());
+
+            return $this->successResponse("favorite added successfully");
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
         }

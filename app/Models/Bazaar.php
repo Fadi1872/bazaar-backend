@@ -83,4 +83,14 @@ class Bazaar extends Model
     {
         return $this->hasMany(BazaarJoinRequest::class);
     }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function isFavoritedBy($userId)
+    {
+        return $this->favorites()->where('user_id', $userId)->exists();
+    }
 }

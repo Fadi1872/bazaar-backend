@@ -15,6 +15,7 @@ use App\Http\Resources\StoreResource;
 use App\Models\Product;
 use App\Models\Store;
 use App\Services\CommentService;
+use App\Services\FavoriteService;
 use App\Services\StoreService;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -247,6 +248,17 @@ class StoreController extends Controller
             return $this->successResponse("comments listed", CommentResource::collection($comments));
         } catch (Exception $e) {
             return $this->errorResponse("failed to list comments", 500);
+        }
+    }
+
+    public function toggleStore(Store $store, FavoriteService $service)
+    {
+        try {
+            $added = $service->toggleFavorite($store, Auth::user());
+
+            return $this->successResponse("favorite added successfully");
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to add to favorite");
         }
     }
 }

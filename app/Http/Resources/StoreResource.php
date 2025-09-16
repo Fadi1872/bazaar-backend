@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Services\ImageStorage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class StoreResource extends JsonResource
 {
@@ -40,6 +41,7 @@ class StoreResource extends JsonResource
                 : [],
             "categories" => $this->productCat ?? [],
             "products" => $this->products ?? [],
+            "isFavorite" => $this->isFavoritedBy(Auth::id())
         ];
     }
 }
