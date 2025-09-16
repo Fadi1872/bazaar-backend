@@ -32,7 +32,9 @@ class ProductCardResource extends JsonResource
                 : [],
             "oldPrice" => 0,
             "size" => "",
-            "isFavorite" => $this->isFavoritedBy(Auth::id())
+            "isFavorite" => $this->isFavoritedBy(Auth::id()),
+            "quantity" => $this->stock_qty,
+            "cost" => $this->cost
         ];
     }
 }
