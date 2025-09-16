@@ -256,9 +256,21 @@ class StoreController extends Controller
         try {
             $added = $service->toggleFavorite($store, Auth::user());
 
-            return $this->successResponse("favorite added successfully");
+            return $this->successResponse("favorite added successfully", new StoreResource($store->load(['image', 'category'])));
         } catch (Exception $e) {
             return $this->errorResponse("failed to add to favorite");
+        }
+    }
+
+    public function getFavStores()
+    {
+        try {
+            $user = Auth::user();
+            $stores = $user->favoriteStores()->with(['image', 'category'])->get();
+
+            return $this->successResponse("favorite stores listed", StoreResource::collection($stores));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to get all favorite stores");
         }
     }
 }

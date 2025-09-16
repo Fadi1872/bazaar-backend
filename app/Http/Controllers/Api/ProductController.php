@@ -166,9 +166,21 @@ class ProductController extends Controller
         try {
             $added = $service->toggleFavorite($product, Auth::user());
 
-            return $this->successResponse("favorite added successfully");
+            return $this->successResponse("favorite added successfully", new ProductCardResource($product));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function getFavProducts()
+    {
+        try {
+            $user = Auth::user();
+            $products = $user->favoriteProducts()->with(['image', 'category'])->get();
+
+            return $this->successResponse("favorite products listed", ProductCardResource::collection($products));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to get all favorite products");
         }
     }
 }

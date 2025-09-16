@@ -216,9 +216,21 @@ class BazaarController extends Controller
         try {
             $added = $service->toggleFavorite($bazaar, Auth::user());
 
-            return $this->successResponse("favorite added successfully");
+            return $this->successResponse("favorite added successfully", new BazaarResource($bazaar));
         } catch (Exception $e) {
             return $this->errorResponse("failed to add to favorite");
+        }
+    }
+
+    public function getFavBazaars()
+    {
+        try {
+            $user = Auth::user();
+            $bazaars = $user->favoriteBazaars()->with(['image', 'category'])->get();
+
+            return $this->successResponse("favorite bazaars listed", BazaarResource::collection($bazaars));
+        } catch (Exception $e) {
+            return $this->errorResponse("failed to get all favorite bazaars");
         }
     }
 }
